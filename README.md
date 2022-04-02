@@ -4,7 +4,7 @@ Convenient library that provides methods to perform row/column operations over n
 
 ## Installation
 
-Install from pypi
+Install from [pypi](https://pypi.org/project/mopsy/)
 
 ```shell
 pip install mopsy
@@ -13,7 +13,7 @@ pip install mopsy
 ## Usage
 
 ```python
-from mopsy import colsums
+from mopsy import colsum
 import random from rd
 # generate a random sparse array with some density
 from scipy.sparse import random
@@ -26,6 +26,8 @@ groups = [rd.choice(gsets) for x in range(mat.shape[axis])]
 
 colsum(mat, groups)
 ```
+
+Methods are available to perform `sum`, `median`, `mean` along any axis. a generic `apply` method is also available for perform row-wise or column-wise operations.
 
 <!-- pyscaffold-notes -->
 
