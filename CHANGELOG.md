@@ -2,6 +2,6 @@
 
 ## Version 0.1 (development)
 
-- Feature A added
-- FIX: nasty bug #1729 fixed
-- add your changes here!
+- first release
+- performs some basic operations over numpy or scipy matrices. 
+- provides apply method so user can extend the underlying logic to any function
