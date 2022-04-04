@@ -1,0 +1,7 @@
+mopsy
+=====
+
+.. toctree::
+   :maxdepth: 4
+
+   mopsy

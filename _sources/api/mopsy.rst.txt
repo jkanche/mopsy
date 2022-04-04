@@ -1,0 +1,53 @@
+mopsy package
+=============
+
+Submodules
+----------
+
+mopsy.helpers module
+--------------------
+
+.. automodule:: mopsy.helpers
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+mopsy.mops module
+-----------------
+
+.. automodule:: mopsy.mops
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+mopsy.nops module
+-----------------
+
+.. automodule:: mopsy.nops
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+mopsy.sops module
+-----------------
+
+.. automodule:: mopsy.sops
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+mopsy.utils module
+------------------
+
+.. automodule:: mopsy.utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: mopsy
+   :members:
+   :undoc-members:
+   :show-inheritance:
