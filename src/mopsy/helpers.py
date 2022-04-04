@@ -103,8 +103,8 @@ def rowmedian(
 def apply(
     func: Callable[[list], Any],
     mat: Union[numpy.ndarray, scipy.sparse.spmatrix],
-    group: list = None,
-    axis: int = 0,
+    group: list,
+    axis: int,
 ):
     """a generic apply function
 
