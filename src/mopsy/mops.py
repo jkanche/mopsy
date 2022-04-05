@@ -65,11 +65,12 @@ class Mops:
         result = []
         try:
             if group is None:
-                result = self.matrix._apply(func, axis=axis)
+                tmat = self._apply(func, axis=axis)
+                result = tmat[np.newaxis] if axis == 0 else tmat[np.newaxis].T
             else:
                 for g, kmat in self.iter(group, axis):
                     tmat = kmat._apply(func, axis=axis)
-                    result.append(tmat if axis == 0 else tmat.T)
+                    result.append(tmat)
                 result = np.stack(result, axis=axis)
         except Exception as e:
             print(f"Error: applying function: {str(e)}")
