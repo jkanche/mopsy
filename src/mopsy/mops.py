@@ -77,3 +77,29 @@ class Mops:
             raise Exception("ApplyFuncError")
 
         return result
+
+    def fapply(self, funcs: list, axis: int = 1) -> np.ndarray:
+        """ a reduction apply with multiple functions
+
+        Args:
+            funcs (list): functions to be called.
+            axis (int, optional): 0 for rows, 1 for columns. Defaults to 0.
+
+        Raises:
+            Exception: ApplyFuncError, when a function cannot be applied
+
+        Returns:
+            numpy.ndarray: a matrix
+        """
+        result = []
+        try:
+            for func in funcs:
+                for g, kmat in self.iter(group=None, axis=axis):
+                    tmat = kmat._apply(func, axis=axis)
+                result.append(tmat)
+            result = np.stack(result, axis=axis)
+        except Exception as e:
+            print(f"Error: applying function: {str(e)}")
+            raise Exception("ApplyFuncError")
+
+        return result

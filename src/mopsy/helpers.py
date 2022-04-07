@@ -117,3 +117,19 @@ def apply(
     """
     tmat = get_matrix_type(mat)
     return tmat.apply(func, group=group, axis=axis)
+
+
+def fapply(
+    mat: Union[numpy.ndarray, scipy.sparse.spmatrix], funcs: list, axis: int,
+):
+    """a reduction apply with multiple functions
+
+    Args:
+        mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix
+        funcs (list): functions to be called.
+
+    Returns:
+        numpy.ndarray: matrix
+    """
+    tmat = get_matrix_type(mat)
+    return tmat.fapply(funcs, axis=axis)

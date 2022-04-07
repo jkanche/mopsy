@@ -38,11 +38,7 @@ class Nops(Mops):
                 if axis == 0:
                     yield (
                         k,
-                        Nops(
-                            mat[
-                                v,
-                            ]
-                        ),
+                        Nops(mat[v,]),
                     )
                 else:
                     yield (k, Nops(mat[:, v]))

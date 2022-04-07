@@ -42,11 +42,7 @@ class Sops(Mops):
                 if axis == 0:
                     yield (
                         k,
-                        Sops(
-                            mat[
-                                v,
-                            ]
-                        ),
+                        Sops(mat[v,]),
                     )
                 else:
                     yield (k, Sops(mat[:, v]))
@@ -63,3 +59,4 @@ class Sops(Mops):
         """
         dense_mat = Nops(self.matrix.toarray())
         return dense_mat._apply(func, axis)
+
