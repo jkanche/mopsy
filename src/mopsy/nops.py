@@ -31,7 +31,14 @@ class Nops(Mops):
         mat = self.matrix
 
         if group is None:
-            yield (group, self)
+            axis_length = mat.shape[0] if axis == 0 else mat.shape[1]
+
+            if axis == 0:
+                for row_index in range(axis_length):
+                    yield Nops(mat[row_index, :])
+            else:
+                for col_index in range(axis_length):
+                    yield Nops(mat[:, col_index])
         else:
             idx_groups = self.groupby_indices(group)
             for k, v in idx_groups.items():

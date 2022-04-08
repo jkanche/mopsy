@@ -109,8 +109,10 @@ def apply(
     """a generic apply function
 
     Args:
+        func (Callable): function to be called.
         mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix
         group (_type_, optional): group variable. Defaults to None.
+        axis (int): 0 for rows, 1 for columns.
 
     Returns:
         numpy.ndarray: matrix
@@ -119,17 +121,18 @@ def apply(
     return tmat.apply(func, group=group, axis=axis)
 
 
-def fapply(
-    mat: Union[numpy.ndarray, scipy.sparse.spmatrix], funcs: list, axis: int,
+def multi_apply(
+    mat: Union[numpy.ndarray, scipy.sparse.spmatrix], funcs: list[Callable], axis: int,
 ):
     """a reduction apply with multiple functions
 
     Args:
         mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix
         funcs (list): functions to be called.
+        axis (int): 0 for rows, 1 for columns.
 
     Returns:
         numpy.ndarray: matrix
     """
     tmat = get_matrix_type(mat)
-    return tmat.fapply(funcs, axis=axis)
+    return tmat.multi_apply(funcs, axis=axis)

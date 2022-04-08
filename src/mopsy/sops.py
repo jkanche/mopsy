@@ -35,7 +35,15 @@ class Sops(Mops):
         mat = self.matrix.tocsr() if axis == 0 else self.matrix.tocsc()
 
         if group is None:
-            yield (group, Sops(mat))
+            axis_length = mat.get_shape()[0] if axis == 0 else mat.get_shape()[1]
+
+            if axis == 0:
+                for row_index in range(axis_length):
+                    yield Sops(mat[row_index, :])
+            else:
+                for col_index in range(axis_length):
+                    yield Sops(mat[:, col_index])
+
         else:
             idx_groups = self.groupby_indices(group)
             for k, v in idx_groups.items():

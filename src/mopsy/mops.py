@@ -78,11 +78,11 @@ class Mops:
 
         return result
 
-    def fapply(self, funcs: list, axis: int = 1) -> np.ndarray:
+    def multi_apply(self, funcs: list[Callable], axis: int = 0) -> np.ndarray:
         """ a reduction apply with multiple functions
 
         Args:
-            funcs (list): functions to be called.
+            funcs (Callable): functions to be called.
             axis (int, optional): 0 for rows, 1 for columns. Defaults to 0.
 
         Raises:
@@ -93,13 +93,40 @@ class Mops:
         """
         result = []
         try:
-            for func in funcs:
-                for g, kmat in self.iter(group=None, axis=axis):
-                    tmat = kmat._apply(func, axis=axis)
-                result.append(tmat)
-            result = np.stack(result, axis=axis)
+
+            # assumption  axis = 0
+
+            for dimension in self.iter(group=None, axis=self.cross_axis(axis)):
+                values_vector = []
+
+                for func in funcs:
+                    value = dimension._apply(func, axis=axis)
+                    values_vector.append(value)
+
+                values_vector = np.stack(values_vector, axis=axis)
+                result.append(values_vector)
+
+            stack = np.hstack if axis == 0 else np.vstack
+
+            result = stack(result)
+
         except Exception as e:
             print(f"Error: applying function: {str(e)}")
             raise Exception("ApplyFuncError")
 
         return result
+
+    def cross_axis(self, axis: int):
+        """Get perpendicular axis to specified axis
+
+        Args:
+            axis (int): axis
+
+        Returns:
+            axis (int): other axis
+        """
+
+        if axis == 0:
+            return 1
+        else:
+            return 0
