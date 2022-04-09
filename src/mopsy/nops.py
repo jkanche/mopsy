@@ -1,3 +1,4 @@
+from typing import Any, Iterator, Tuple, Type
 from .mops import Mops
 
 import numpy as np
@@ -18,7 +19,7 @@ class Nops(Mops):
         """
         super().__init__(mat)
 
-    def iter(self, group=None, axis=0) -> tuple:
+    def iter(self, group=None, axis=0) -> Iterator[Tuple]:
         """an Iterator over groups and an axis
 
         Args:

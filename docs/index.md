@@ -1,21 +1,17 @@
 # mopsy
+Convenience library to perform row/column operations over numpy and scipy matrices. Provides an interface similar to base R matrix methods/MatrixStats methods in python.
 
-Add a short description here!
+## Installation
 
+Install from [pypi](https://pypi.org/project/mopsy/)
 
-## Note
-
-> This is the main page of your project's [Sphinx] documentation. It is
-> formatted in [Markdown]. Add additional pages by creating md-files in
-> `docs` or rst-files (formated in [reStructuredText]) and adding links to
-> them in the `Contents` section below.
->
-> Please check [Sphinx], [recommonmark] and [autostructify] for more information
-> about how to document your project and how to configure your preferences.
-
+```shell
+pip install mopsy
+```
 
 ## Contents
 
+* [Tutorial](tutorial)
 * [Overview](readme)
 * [License](license)
 * [Authors](authors)

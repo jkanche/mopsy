@@ -4,7 +4,7 @@ from .nops import Nops
 import scipy.sparse as sp
 import numpy as np
 
-from typing import Callable, Any
+from typing import Callable, Any, Iterator, Tuple
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"
@@ -22,7 +22,7 @@ class Sops(Mops):
         """
         super().__init__(mat)
 
-    def iter(self, group: list = None, axis: int = 0) -> tuple:
+    def iter(self, group: list = None, axis: int = 0) -> Iterator[Tuple]:
         """an Iterator over groups and an axis
 
         Args:
@@ -35,7 +35,7 @@ class Sops(Mops):
         mat = self.matrix.tocsr() if axis == 0 else self.matrix.tocsc()
 
         if group is None:
-            yield (group, Sops(mat))
+            yield (group, self)
         else:
             idx_groups = self.groupby_indices(group)
             for k, v in idx_groups.items():
