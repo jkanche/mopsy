@@ -1,6 +1,6 @@
 # mopsy - Matrix Operations in Python
 
-Convenient library that provides methods to perform row/column operations over numpy and scipy matrices in Python. The goal of this library is to provide a similar interface to perform base R matrix methods/MatrixStats methods in python.
+Convenience library to perform row/column operations over numpy and scipy matrices. Provides an interface similar to base R matrix methods/MatrixStats methods in python.
 
 ## Installation
 
