@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>mopsy &mdash; mopsy 0.1.2 documentation</title>
+  <title>mopsy &mdash; mopsy 0.2.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -18,7 +18,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="mopsy - Matrix Operations in Python" href="readme.html" /> 
+    <link rel="next" title="Tutorial" href="tutorial.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -29,7 +29,7 @@
             <a href="#" class="icon icon-home"> mopsy
           </a>
               <div class="version">
-                0.1.2
+                0.2.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -40,6 +40,8 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html#bring-your-own-function">Bring your own function</a></li>
 <li class="toctree-l1"><a class="reference internal" href="readme.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
@@ -73,22 +75,27 @@
              
   <section id="mopsy">
 <h1>mopsy<a class="headerlink" href="#mopsy" title="Permalink to this headline"></a></h1>
-<p>Add a short description here!</p>
-<section id="note">
-<h2>Note<a class="headerlink" href="#note" title="Permalink to this headline"></a></h2>
-<blockquote>
-<div><p>This is the main page of your project’s <a class="reference external" href="http://www.sphinx-doc.org/">Sphinx</a> documentation. It is
-formatted in <a class="reference external" href="https://daringfireball.net/projects/markdown/">Markdown</a>. Add additional pages by creating md-files in
-<code class="docutils literal notranslate"><span class="pre">docs</span></code> or rst-files (formated in <a class="reference external" href="http://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html">reStructuredText</a>) and adding links to
-them in the <code class="docutils literal notranslate"><span class="pre">Contents</span></code> section below.</p>
-<p>Please check <a class="reference external" href="http://www.sphinx-doc.org/">Sphinx</a>, <a class="reference external" href="https://recommonmark.readthedocs.io/en/latest">recommonmark</a> and <a class="reference external" href="https://recommonmark.readthedocs.io/en/latest/auto_structify.html">autostructify</a> for more information
-about how to document your project and how to configure your preferences.</p>
-</div></blockquote>
+<p>Convenience library to perform row/column operations over numpy and scipy matrices. Provides an interface similar to base R matrix methods/MatrixStats methods in python.</p>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h2>
+<p>Install from <a class="reference external" href="https://pypi.org/project/mopsy/">pypi</a></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pip install mopsy
+</pre></div>
+</div>
 </section>
 <section id="contents">
 <h2>Contents<a class="headerlink" href="#contents" title="Permalink to this headline"></a></h2>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#sample-data">Sample data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#apply-a-function-along-an-axis">apply a function along an axis</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html#bring-your-own-function">Bring your own function</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#multiple-functions">Multiple functions</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="readme.html">Overview</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="readme.html#installation">Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="readme.html#usage">Usage</a></li>
@@ -98,6 +105,7 @@ about how to document your project and how to configure your preferences.</p>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-0">Version 0.2.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-development">Version 0.1 (development)</a></li>
 </ul>
 </li>
@@ -122,7 +130,7 @@ about how to document your project and how to configure your preferences.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="readme.html" class="btn btn-neutral float-right" title="mopsy - Matrix Operations in Python" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="tutorial.html" class="btn btn-neutral float-right" title="Tutorial" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

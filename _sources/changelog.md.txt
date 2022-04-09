@@ -1,5 +1,9 @@
 # Changelog
 
+
+## Version 0.2.0 
+- Support multi apply
+
 ## Version 0.1 (development)
 
 - first release

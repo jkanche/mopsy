@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>mopsy.helpers &mdash; mopsy 0.1.2 documentation</title>
+  <title>mopsy.helpers &mdash; mopsy 0.2.0 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -27,7 +27,7 @@
             <a href="../../index.html" class="icon icon-home"> mopsy
           </a>
               <div class="version">
-                0.1.2
+                0.2.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -38,6 +38,8 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html#bring-your-own-function">Bring your own function</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../readme.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../authors.html">Authors</a></li>
@@ -73,7 +75,7 @@
 <span></span><span class="kn">from</span> <span class="nn">statistics</span> <span class="kn">import</span> <span class="n">mean</span><span class="p">,</span> <span class="n">median</span>
 <span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">get_matrix_type</span>
 
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Any</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Any</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">scipy</span>
 
@@ -89,7 +91,7 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix</span>
-<span class="sd">        group (_type_, optional): group variable. Defaults to None.</span>
+<span class="sd">        group (list, optional): group variable. Defaults to None.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        numpy.ndarray: matrix</span>
@@ -104,7 +106,7 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix</span>
-<span class="sd">        group (_type_, optional): group variable. Defaults to None.</span>
+<span class="sd">        group (list, optional): group variable. Defaults to None.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        numpy.ndarray: matrix</span>
@@ -119,7 +121,7 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix</span>
-<span class="sd">        group (_type_, optional): group variable. Defaults to None.</span>
+<span class="sd">        group (list, optional): group variable. Defaults to None.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        numpy.ndarray: matrix</span>
@@ -134,7 +136,7 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix</span>
-<span class="sd">        group (_type_, optional): group variable. Defaults to None.</span>
+<span class="sd">        group (list, optional): group variable. Defaults to None.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        numpy.ndarray: matrix</span>
@@ -149,7 +151,7 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix</span>
-<span class="sd">        group (_type_, optional): group variable. Defaults to None.</span>
+<span class="sd">        group (list, optional): group variable. Defaults to None.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        numpy.ndarray: matrix</span>
@@ -164,7 +166,7 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix</span>
-<span class="sd">        group (_type_, optional): group variable. Defaults to None.</span>
+<span class="sd">        group (list, optional): group variable. Defaults to None.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        numpy.ndarray: matrix</span>
@@ -181,14 +183,39 @@
     <span class="sd">&quot;&quot;&quot;a generic apply function</span>
 
 <span class="sd">    Args:</span>
+<span class="sd">        func (Callable): function to be called.</span>
 <span class="sd">        mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix</span>
-<span class="sd">        group (_type_, optional): group variable. Defaults to None.</span>
+<span class="sd">        group (list, optional): group variable. Defaults to None.</span>
+<span class="sd">        axis (int): 0 for rows, 1 for columns.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        numpy.ndarray: matrix</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">tmat</span> <span class="o">=</span> <span class="n">get_matrix_type</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">tmat</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="multi_apply"><a class="viewcode-back" href="../../api/mopsy.html#mopsy.helpers.multi_apply">[docs]</a><span class="k">def</span> <span class="nf">multi_apply</span><span class="p">(</span>
+    <span class="n">funcs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">list</span><span class="p">],</span> <span class="n">Any</span><span class="p">]],</span>
+    <span class="n">mat</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">],</span>
+    <span class="n">group</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+    <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Apply multiple functions, the first axis</span>
+<span class="sd">        of the ndarray specifies the results of the inputs functions in</span>
+<span class="sd">        the same order</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        funcs (List[Callable[[list], Any]]): functions to be called.</span>
+<span class="sd">        mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix</span>
+<span class="sd">        group (list, optional): group variable. Defaults to None.</span>
+<span class="sd">        axis (int): 0 for rows, 1 for columns.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        numpy.ndarray: matrix</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tmat</span> <span class="o">=</span> <span class="n">get_matrix_type</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tmat</span><span class="o">.</span><span class="n">multi_apply</span><span class="p">(</span><span class="n">funcs</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
