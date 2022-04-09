@@ -1,3 +1,4 @@
+import numpy as np
 from mopsy.sops import Sops
 from scipy.sparse import eye
 
@@ -52,9 +53,7 @@ def test_group_apply_row_None():
     assert rmat is not None
     assert rmat.shape[0] == 1
     assert rmat.shape[1] == 5
-    assert rmat[
-        :,
-    ].flatten().tolist() == [1.0, 1.0, 1.0, 1.0, 1.0]
+    assert rmat[:,].flatten().tolist() == [1.0, 1.0, 1.0, 1.0, 1.0]
 
 
 def test_group_apply_col_None():
@@ -63,6 +62,27 @@ def test_group_apply_col_None():
     assert rmat is not None
     assert rmat.shape[0] == 5
     assert rmat.shape[1] == 1
-    assert rmat[
-        :,
-    ].flatten().tolist() == [1.0, 1.0, 1.0, 1.0, 1.0]
+    assert rmat[:,].flatten().tolist() == [1.0, 1.0, 1.0, 1.0, 1.0]
+
+
+def test_multi_apply_rows():
+    tmat = Sops(mat)
+    rmat = tmat.multi_apply([np.sum, np.mean], axis=0)
+    assert rmat is not None
+    assert rmat.shape[0] == 2
+    assert rmat.shape[1] == 5
+    assert rmat[:, 0].tolist() == [1.0, 0.2]
+    assert rmat[0, :].tolist() == [1.0, 1.0, 1.0, 1.0, 1.0]
+    assert rmat[1, :].tolist() == [0.2, 0.2, 0.2, 0.2, 0.2]
+
+
+def test_multi_apply_cols():
+    tmat = Sops(mat)
+    rmat = tmat.multi_apply([np.sum, np.mean], axis=1)
+    assert rmat is not None
+    assert rmat.shape[0] == 5
+    assert rmat.shape[1] == 2
+    assert rmat[0, :].tolist() == [1.0, 0.2]
+    assert rmat[:, 0].tolist() == [1.0, 1.0, 1.0, 1.0, 1.0]
+    assert rmat[:, 1].tolist() == [0.2, 0.2, 0.2, 0.2, 0.2]
+

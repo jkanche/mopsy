@@ -122,13 +122,13 @@ def apply(
 
 
 def multi_apply(
-    mat: Union[numpy.ndarray, scipy.sparse.spmatrix], funcs: list[Callable], axis: int,
+    funcs: list[Callable], mat: Union[numpy.ndarray, scipy.sparse.spmatrix], axis: int,
 ):
     """a reduction apply with multiple functions
 
     Args:
+        funcs (list[Callable]): functions to be called.
         mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix
-        funcs (list): functions to be called.
         axis (int): 0 for rows, 1 for columns.
 
     Returns:

@@ -82,7 +82,7 @@ class Mops:
         """ a reduction apply with multiple functions
 
         Args:
-            funcs (Callable): functions to be called.
+            funcs (list[Callable]): functions to be called.
             axis (int, optional): 0 for rows, 1 for columns. Defaults to 0.
 
         Raises:
@@ -93,8 +93,6 @@ class Mops:
         """
         result = []
         try:
-
-            # assumption  axis = 0
 
             for dimension in self.iter(group=None, axis=self.cross_axis(axis)):
                 values_vector = []

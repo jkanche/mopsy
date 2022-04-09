@@ -35,10 +35,11 @@ class Nops(Mops):
 
             if axis == 0:
                 for row_index in range(axis_length):
-                    yield Nops(mat[row_index, :])
+                    yield Nops(mat[[row_index], :])
             else:
                 for col_index in range(axis_length):
-                    yield Nops(mat[:, col_index])
+                    yield Nops(mat[:, [col_index]])
+
         else:
             idx_groups = self.groupby_indices(group)
             for k, v in idx_groups.items():
