@@ -1,6 +1,6 @@
 from itertools import groupby
 import numpy as np
-from typing import Any, Callable
+from typing import Any, Callable, List
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"
@@ -47,7 +47,7 @@ class Mops:
         return np.apply_along_axis(func, axis, self.matrix)
 
     def apply(
-        self, func: Callable[[list], Any], group: list = None, axis: int = 1
+        self, func: Callable[[list], Any], group: list = None, axis: int = 0
     ) -> np.ndarray:
         """apply a function to groups along an axis
 
@@ -78,11 +78,19 @@ class Mops:
 
         return result
 
-    def multi_apply(self, funcs: list[Callable], axis: int = 0) -> np.ndarray:
-        """ a reduction apply with multiple functions
+    def multi_apply(
+        self,
+        funcs: List[Callable[[list], Any]],
+        group: list = None,
+        axis: int = 0,
+    ) -> np.ndarray:
+        """Apply multiple functions, the first axis
+        of the ndarray specifies the results of the inputs functions in
+        the same order
 
         Args:
-            funcs (list[Callable]): functions to be called.
+            funcs (List[Callable[[list], Any]]): functions to be called.
+            group (list, optional): group variable. Defaults to None.
             axis (int, optional): 0 for rows, 1 for columns. Defaults to 0.
 
         Raises:
@@ -94,37 +102,26 @@ class Mops:
         result = []
         try:
 
-            for dimension in self.iter(group=None, axis=self.cross_axis(axis)):
-                values_vector = []
+            if group is None:
+                tmats = [self._apply(f, axis=axis) for f in funcs]
+                nmats = [
+                    x[np.newaxis] if axis == 0 else x[np.newaxis].T
+                    for x in tmats
+                ]
+                result = np.stack(nmats)
+            else:
+                tmats = []
+                for g, kmat in self.iter(group, axis):
+                    tmats.append([kmat._apply(f, axis=axis) for f in funcs])
 
-                for func in funcs:
-                    value = dimension._apply(func, axis=axis)
-                    values_vector.append(value)
+                nmats = []
+                for smats in zip(*tmats):
+                    nmats.append(np.stack(smats, axis=axis))
 
-                values_vector = np.stack(values_vector, axis=axis)
-                result.append(values_vector)
-
-            stack = np.hstack if axis == 0 else np.vstack
-
-            result = stack(result)
+                result = np.stack(nmats)
 
         except Exception as e:
             print(f"Error: applying function: {str(e)}")
             raise Exception("ApplyFuncError")
 
         return result
-
-    def cross_axis(self, axis: int):
-        """Get perpendicular axis to specified axis
-
-        Args:
-            axis (int): axis
-
-        Returns:
-            axis (int): other axis
-        """
-
-        if axis == 0:
-            return 1
-        else:
-            return 0

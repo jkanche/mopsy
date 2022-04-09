@@ -4,7 +4,7 @@ from .nops import Nops
 import scipy.sparse as sp
 import numpy as np
 
-from typing import Callable, Any
+from typing import Callable, Any, Iterator, Tuple
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"
@@ -22,7 +22,7 @@ class Sops(Mops):
         """
         super().__init__(mat)
 
-    def iter(self, group: list = None, axis: int = 0) -> tuple:
+    def iter(self, group: list = None, axis: int = 0) -> Iterator[Tuple]:
         """an Iterator over groups and an axis
 
         Args:
@@ -35,22 +35,18 @@ class Sops(Mops):
         mat = self.matrix.tocsr() if axis == 0 else self.matrix.tocsc()
 
         if group is None:
-            axis_length = mat.get_shape()[0] if axis == 0 else mat.get_shape()[1]
-
-            if axis == 0:
-                for row_index in range(axis_length):
-                    yield Sops(mat[row_index, :])
-            else:
-                for col_index in range(axis_length):
-                    yield Sops(mat[:, col_index])
-
+            yield (group, self)
         else:
             idx_groups = self.groupby_indices(group)
             for k, v in idx_groups.items():
                 if axis == 0:
                     yield (
                         k,
-                        Sops(mat[v,]),
+                        Sops(
+                            mat[
+                                v,
+                            ]
+                        ),
                     )
                 else:
                     yield (k, Sops(mat[:, v]))
@@ -67,4 +63,3 @@ class Sops(Mops):
         """
         dense_mat = Nops(self.matrix.toarray())
         return dense_mat._apply(func, axis)
-

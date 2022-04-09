@@ -1,7 +1,7 @@
 from statistics import mean, median
 from .utils import get_matrix_type
 
-from typing import Union, Callable, Any
+from typing import List, Union, Callable, Any
 import numpy
 import scipy
 
@@ -17,7 +17,7 @@ def colsum(
 
     Args:
         mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix
-        group (_type_, optional): group variable. Defaults to None.
+        group (list, optional): group variable. Defaults to None.
 
     Returns:
         numpy.ndarray: matrix
@@ -32,7 +32,7 @@ def rowsum(
 
     Args:
         mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix
-        group (_type_, optional): group variable. Defaults to None.
+        group (list, optional): group variable. Defaults to None.
 
     Returns:
         numpy.ndarray: matrix
@@ -47,7 +47,7 @@ def colmean(
 
     Args:
         mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix
-        group (_type_, optional): group variable. Defaults to None.
+        group (list, optional): group variable. Defaults to None.
 
     Returns:
         numpy.ndarray: matrix
@@ -62,7 +62,7 @@ def rowmean(
 
     Args:
         mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix
-        group (_type_, optional): group variable. Defaults to None.
+        group (list, optional): group variable. Defaults to None.
 
     Returns:
         numpy.ndarray: matrix
@@ -77,7 +77,7 @@ def colmedian(
 
     Args:
         mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix
-        group (_type_, optional): group variable. Defaults to None.
+        group (list, optional): group variable. Defaults to None.
 
     Returns:
         numpy.ndarray: matrix
@@ -92,7 +92,7 @@ def rowmedian(
 
     Args:
         mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix
-        group (_type_, optional): group variable. Defaults to None.
+        group (list, optional): group variable. Defaults to None.
 
     Returns:
         numpy.ndarray: matrix
@@ -111,7 +111,7 @@ def apply(
     Args:
         func (Callable): function to be called.
         mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix
-        group (_type_, optional): group variable. Defaults to None.
+        group (list, optional): group variable. Defaults to None.
         axis (int): 0 for rows, 1 for columns.
 
     Returns:
@@ -122,17 +122,23 @@ def apply(
 
 
 def multi_apply(
-    funcs: list[Callable], mat: Union[numpy.ndarray, scipy.sparse.spmatrix], axis: int,
+    funcs: List[Callable[[list], Any]],
+    mat: Union[numpy.ndarray, scipy.sparse.spmatrix],
+    group: list,
+    axis: int,
 ):
-    """a reduction apply with multiple functions
+    """Apply multiple functions, the first axis
+        of the ndarray specifies the results of the inputs functions in
+        the same order
 
     Args:
-        funcs (list[Callable]): functions to be called.
+        funcs (List[Callable[[list], Any]]): functions to be called.
         mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix
+        group (list, optional): group variable. Defaults to None.
         axis (int): 0 for rows, 1 for columns.
 
     Returns:
         numpy.ndarray: matrix
     """
     tmat = get_matrix_type(mat)
-    return tmat.multi_apply(funcs, axis=axis)
+    return tmat.multi_apply(funcs, group=group, axis=axis)

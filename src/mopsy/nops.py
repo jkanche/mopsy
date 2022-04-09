@@ -1,3 +1,4 @@
+from typing import Any, Iterator, Tuple, Type
 from .mops import Mops
 
 import numpy as np
@@ -18,7 +19,7 @@ class Nops(Mops):
         """
         super().__init__(mat)
 
-    def iter(self, group=None, axis=0) -> tuple:
+    def iter(self, group=None, axis=0) -> Iterator[Tuple]:
         """an Iterator over groups and an axis
 
         Args:
@@ -31,22 +32,18 @@ class Nops(Mops):
         mat = self.matrix
 
         if group is None:
-            axis_length = mat.shape[0] if axis == 0 else mat.shape[1]
-
-            if axis == 0:
-                for row_index in range(axis_length):
-                    yield Nops(mat[[row_index], :])
-            else:
-                for col_index in range(axis_length):
-                    yield Nops(mat[:, [col_index]])
-
+            yield (group, self)
         else:
             idx_groups = self.groupby_indices(group)
             for k, v in idx_groups.items():
                 if axis == 0:
                     yield (
                         k,
-                        Nops(mat[v,]),
+                        Nops(
+                            mat[
+                                v,
+                            ]
+                        ),
                     )
                 else:
                     yield (k, Nops(mat[:, v]))
