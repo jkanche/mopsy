@@ -103,8 +103,8 @@ def rowmedian(
 def apply(
     func: Callable[[list], Any],
     mat: Union[numpy.ndarray, scipy.sparse.spmatrix],
-    group: list,
     axis: int,
+    group: list = None
 ):
     """a generic apply function
 
@@ -124,8 +124,8 @@ def apply(
 def multi_apply(
     funcs: List[Callable[[list], Any]],
     mat: Union[numpy.ndarray, scipy.sparse.spmatrix],
-    group: list,
     axis: int,
+    group: list = None
 ):
     """Apply multiple functions, the first axis
         of the ndarray specifies the results of the inputs functions in
