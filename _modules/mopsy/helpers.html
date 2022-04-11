@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>mopsy.helpers &mdash; mopsy 0.2.0 documentation</title>
+  <title>mopsy.helpers &mdash; mopsy 0.2.1 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -27,7 +27,7 @@
             <a href="../../index.html" class="icon icon-home"> mopsy
           </a>
               <div class="version">
-                0.2.0
+                0.2.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -177,8 +177,8 @@
 <div class="viewcode-block" id="apply"><a class="viewcode-back" href="../../api/mopsy.html#mopsy.helpers.apply">[docs]</a><span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
     <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">list</span><span class="p">],</span> <span class="n">Any</span><span class="p">],</span>
     <span class="n">mat</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">],</span>
-    <span class="n">group</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
     <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">group</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;a generic apply function</span>
 
@@ -198,8 +198,8 @@
 <div class="viewcode-block" id="multi_apply"><a class="viewcode-back" href="../../api/mopsy.html#mopsy.helpers.multi_apply">[docs]</a><span class="k">def</span> <span class="nf">multi_apply</span><span class="p">(</span>
     <span class="n">funcs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">list</span><span class="p">],</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">mat</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">],</span>
-    <span class="n">group</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
     <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">group</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Apply multiple functions, the first axis</span>
 <span class="sd">        of the ndarray specifies the results of the inputs functions in</span>
