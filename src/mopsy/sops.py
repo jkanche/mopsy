@@ -1,8 +1,9 @@
 from .mops import Mops
 from .nops import Nops
 
-import scipy.sparse as sp
+from scipy import sparse as sp
 import numpy as np
+from statistics import mean
 
 from typing import Callable, Any, Iterator, Tuple
 
@@ -61,5 +62,21 @@ class Sops(Mops):
         Returns:
             numpy.ndarray: a dense vector
         """
-        dense_mat = Nops(self.matrix.toarray())
-        return dense_mat._apply(func, axis)
+
+        if func in [sum, mean, min, max]:
+            mat = None
+            if func == sum:
+                mat = self.matrix.sum(axis=axis)
+            elif func == mean:
+                mat = self.matrix.mean(axis=axis)
+            elif func == min:
+                mat = self.matrix.min(axis=axis)
+            elif func == max:
+                mat = self.matrix.max(axis=axis)
+
+            # flatten
+            tmat = mat.getA1()
+            return tmat if axis == 0 else tmat.T
+        else:
+            dense_mat = Nops(self.matrix.toarray())
+            return dense_mat._apply(func, axis)

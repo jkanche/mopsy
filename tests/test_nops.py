@@ -77,7 +77,10 @@ def test_multi_apply_rows_None():
     assert rmat.shape[0] == 2
     assert rmat.shape[1] == 1
     assert rmat.shape[2] == 5
-    assert rmat[:, 0].tolist() == [[1.0, 1.0, 1.0, 1.0, 1.0], [0.2, 0.2, 0.2, 0.2, 0.2]]
+    assert rmat[:, 0].tolist() == [
+        [1.0, 1.0, 1.0, 1.0, 1.0],
+        [0.2, 0.2, 0.2, 0.2, 0.2],
+    ]
 
 
 def test_multi_apply_cols_None():
@@ -90,6 +93,7 @@ def test_multi_apply_cols_None():
     assert rmat.shape[2] == 1
     assert rmat[:, 0].tolist() == [[1.0], [0.2]]
 
+
 def test_multi_apply_rows():
     tmat = Nops(mat)
     rmat = tmat.multi_apply([np.sum, np.mean], group=group, axis=0)
@@ -99,7 +103,10 @@ def test_multi_apply_rows():
     assert rmat.shape[0] == 2
     assert rmat.shape[1] == 2
     assert rmat.shape[2] == 5
-    assert rmat[:, 0].tolist() == [[1.0, 0.0, 1.0, 0.0, 0.0], [0.5, 0.0, 0.5, 0.0, 0.0]]
+    assert rmat[:, 0].tolist() == [
+        [1.0, 0.0, 1.0, 0.0, 0.0],
+        [0.5, 0.0, 0.5, 0.0, 0.0],
+    ]
 
 
 def test_multi_apply_cols():
@@ -112,4 +119,3 @@ def test_multi_apply_cols():
     assert rmat.shape[1] == 5
     assert rmat.shape[2] == 2
     assert rmat[:, 0].tolist() == [[1.0, 0.0], [0.5, 0.0]]
-
