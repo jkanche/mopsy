@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>mopsy.utils &mdash; mopsy 0.2.2 documentation</title>
+  <title>mopsy.utils &mdash; mopsy 0.2.3 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -28,7 +28,7 @@
             <a href="../../index.html" class="icon icon-home"> mopsy
           </a>
               <div class="version">
-                0.2.2
+                0.2.3
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -85,11 +85,14 @@
 <span class="n">__license__</span> <span class="o">=</span> <span class="s2">&quot;MIT&quot;</span>
 
 
-<div class="viewcode-block" id="get_matrix_type"><a class="viewcode-back" href="../../api/mopsy.html#mopsy.utils.get_matrix_type">[docs]</a><span class="k">def</span> <span class="nf">get_matrix_type</span><span class="p">(</span><span class="n">mat</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">]):</span>
+<div class="viewcode-block" id="get_matrix_type"><a class="viewcode-back" href="../../api/mopsy.html#mopsy.utils.get_matrix_type">[docs]</a><span class="k">def</span> <span class="nf">get_matrix_type</span><span class="p">(</span>
+    <span class="n">mat</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">],</span> <span class="n">non_zero</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Get an internal matrix state</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        mat (Numpy.ndarray or scipy.sparse.spmatrix): a numpy or scipy matrix</span>
+<span class="sd">        non_zero (bool): filter zero values ?</span>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        Exception: TypeNotSupported, when the matrix type is not supported</span>
@@ -98,10 +101,10 @@
 <span class="sd">        an internal matrix representation object</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">Nops</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Nops</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">non_zero</span><span class="o">=</span><span class="n">non_zero</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">Sops</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Sops</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">non_zero</span><span class="o">=</span><span class="n">non_zero</span><span class="p">)</span>
 
     <span class="c1"># TODO: zarr, xarray, idk what else, pandas df/sparsedf ?</span>
 

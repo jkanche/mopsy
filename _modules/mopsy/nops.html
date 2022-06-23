@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>mopsy.nops &mdash; mopsy 0.2.2 documentation</title>
+  <title>mopsy.nops &mdash; mopsy 0.2.3 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -28,7 +28,7 @@
             <a href="../../index.html" class="icon icon-home"> mopsy
           </a>
               <div class="version">
-                0.2.2
+                0.2.3
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -86,13 +86,14 @@
 <div class="viewcode-block" id="Nops"><a class="viewcode-back" href="../../api/mopsy.html#mopsy.nops.Nops">[docs]</a><span class="k">class</span> <span class="nc">Nops</span><span class="p">(</span><span class="n">Mops</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Internal representation for numpy arrays&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mat</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mat</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">non_zero</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Intialize with a numpy matrix</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            mat (numpy.ndarray): numpy matrix</span>
+<span class="sd">            non_zero (bool): filter zero values ?</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">non_zero</span><span class="o">=</span><span class="n">non_zero</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Nops.iter"><a class="viewcode-back" href="../../api/mopsy.html#mopsy.nops.Nops.iter">[docs]</a>    <span class="k">def</span> <span class="nf">iter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;an Iterator over groups and an axis</span>
@@ -117,11 +118,12 @@
                         <span class="n">Nops</span><span class="p">(</span>
                             <span class="n">mat</span><span class="p">[</span>
                                 <span class="n">v</span><span class="p">,</span>
-                            <span class="p">]</span>
+                            <span class="p">],</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">non_zero</span><span class="p">,</span>
                         <span class="p">),</span>
                     <span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">yield</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">Nops</span><span class="p">(</span><span class="n">mat</span><span class="p">[:,</span> <span class="n">v</span><span class="p">]))</span></div></div>
+                    <span class="k">yield</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">Nops</span><span class="p">(</span><span class="n">mat</span><span class="p">[:,</span> <span class="n">v</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">non_zero</span><span class="p">))</span></div></div>
 </pre></div>
 
            </div>
