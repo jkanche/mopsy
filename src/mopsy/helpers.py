@@ -11,93 +11,111 @@ __license__ = "MIT"
 
 
 def colsum(
-    mat: Union[numpy.ndarray, scipy.sparse.spmatrix], group: list = None
+    mat: Union[numpy.ndarray, scipy.sparse.spmatrix],
+    group: list = None,
+    non_zero: bool = False,
 ) -> numpy.ndarray:
     """apply colsum
 
     Args:
         mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix
         group (list, optional): group variable. Defaults to None.
+        non_zero (bool): filter zero values ?
 
     Returns:
         numpy.ndarray: matrix
     """
-    return apply(sum, mat, group=group, axis=1)
+    return apply(sum, mat, group=group, axis=1, non_zero=non_zero)
 
 
 def rowsum(
-    mat: Union[numpy.ndarray, scipy.sparse.spmatrix], group: list = None
+    mat: Union[numpy.ndarray, scipy.sparse.spmatrix],
+    group: list = None,
+    non_zero: bool = False,
 ) -> numpy.ndarray:
     """apply rowsum
 
     Args:
         mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix
         group (list, optional): group variable. Defaults to None.
+        non_zero (bool): filter zero values ?
 
     Returns:
         numpy.ndarray: matrix
     """
-    return apply(sum, mat, group=group, axis=0)
+    return apply(sum, mat, group=group, axis=0, non_zero=non_zero)
 
 
 def colmean(
-    mat: Union[numpy.ndarray, scipy.sparse.spmatrix], group: list = None
+    mat: Union[numpy.ndarray, scipy.sparse.spmatrix],
+    group: list = None,
+    non_zero: bool = False,
 ) -> numpy.ndarray:
     """apply colmean
 
     Args:
         mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix
         group (list, optional): group variable. Defaults to None.
+        non_zero (bool): filter zero values ?
 
     Returns:
         numpy.ndarray: matrix
     """
-    return apply(mean, mat, group=group, axis=1)
+    return apply(mean, mat, group=group, axis=1, non_zero=non_zero)
 
 
 def rowmean(
-    mat: Union[numpy.ndarray, scipy.sparse.spmatrix], group: list = None
+    mat: Union[numpy.ndarray, scipy.sparse.spmatrix],
+    group: list = None,
+    non_zero: bool = False,
 ) -> numpy.ndarray:
     """apply rowmean
 
     Args:
         mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix
         group (list, optional): group variable. Defaults to None.
+        non_zero (bool): filter zero values ?
 
     Returns:
         numpy.ndarray: matrix
     """
-    return apply(mean, mat, group=group, axis=0)
+    return apply(mean, mat, group=group, axis=0, non_zero=non_zero)
 
 
 def colmedian(
-    mat: Union[numpy.ndarray, scipy.sparse.spmatrix], group: list = None
+    mat: Union[numpy.ndarray, scipy.sparse.spmatrix],
+    group: list = None,
+    non_zero: bool = False,
 ) -> numpy.ndarray:
     """apply colmedian
 
     Args:
         mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix
         group (list, optional): group variable. Defaults to None.
+        non_zero (bool): filter zero values ?
 
     Returns:
         numpy.ndarray: matrix
     """
-    return apply(median, mat, group=group, axis=1)
+    return apply(median, mat, group=group, axis=1, non_zero=non_zero)
 
 
 def rowmedian(
-    mat: Union[numpy.ndarray, scipy.sparse.spmatrix], group: list = None
+    mat: Union[numpy.ndarray, scipy.sparse.spmatrix],
+    group: list = None,
+    non_zero: bool = False,
 ) -> numpy.ndarray:
     """apply rowmedian
 
     Args:
         mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix
         group (list, optional): group variable. Defaults to None.
+        non_zero (bool): filter zero values ?
 
     Returns:
         numpy.ndarray: matrix
     """
-    return apply(median, mat, group=group, axis=0)
+    return apply(median, mat, group=group, axis=0, non_zero=non_zero)
 
 
 def apply(
@@ -105,6 +123,7 @@ def apply(
     mat: Union[numpy.ndarray, scipy.sparse.spmatrix],
     axis: int,
     group: list = None,
+    non_zero: bool = False,
 ):
     """a generic apply function
 
@@ -113,11 +132,12 @@ def apply(
         mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix
         group (list, optional): group variable. Defaults to None.
         axis (int): 0 for rows, 1 for columns.
+        non_zero (bool): filter zero values ?
 
     Returns:
         numpy.ndarray: matrix
     """
-    tmat = get_matrix_type(mat)
+    tmat = get_matrix_type(mat, non_zero=non_zero)
     return tmat.apply(func, group=group, axis=axis)
 
 
@@ -126,6 +146,7 @@ def multi_apply(
     mat: Union[numpy.ndarray, scipy.sparse.spmatrix],
     axis: int,
     group: list = None,
+    non_zero: bool = False,
 ):
     """Apply multiple functions, the first axis
         of the ndarray specifies the results of the inputs functions in
@@ -136,9 +157,10 @@ def multi_apply(
         mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix
         group (list, optional): group variable. Defaults to None.
         axis (int): 0 for rows, 1 for columns.
+        non_zero (bool): filter zero values ?
 
     Returns:
         numpy.ndarray: matrix
     """
-    tmat = get_matrix_type(mat)
+    tmat = get_matrix_type(mat, non_zero=non_zero)
     return tmat.multi_apply(funcs, group=group, axis=axis)

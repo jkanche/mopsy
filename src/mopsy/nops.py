@@ -11,13 +11,14 @@ __license__ = "MIT"
 class Nops(Mops):
     """Internal representation for numpy arrays"""
 
-    def __init__(self, mat: np.ndarray) -> None:
+    def __init__(self, mat: np.ndarray, non_zero: bool = False) -> None:
         """Intialize with a numpy matrix
 
         Args:
             mat (numpy.ndarray): numpy matrix
+            non_zero (bool): filter zero values ?
         """
-        super().__init__(mat)
+        super().__init__(mat, non_zero=non_zero)
 
     def iter(self, group=None, axis=0) -> Iterator[Tuple]:
         """an Iterator over groups and an axis
@@ -42,8 +43,9 @@ class Nops(Mops):
                         Nops(
                             mat[
                                 v,
-                            ]
+                            ],
+                            self.non_zero,
                         ),
                     )
                 else:
-                    yield (k, Nops(mat[:, v]))
+                    yield (k, Nops(mat[:, v], self.non_zero))

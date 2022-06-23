@@ -10,13 +10,15 @@ __license__ = "MIT"
 class Mops:
     """Base class for all matrix operations"""
 
-    def __init__(self, mat) -> None:
+    def __init__(self, mat, non_zero: bool = False) -> None:
         """Intialize the matrix
 
         Args:
             mat (numpy.ndarray or scipy.sparse.spmatrix): a matrix
+            non_zero (bool): filter zero values ?
         """
         self.matrix = mat
+        self.non_zero = non_zero
 
     def groupby_indices(self, group: list) -> dict:
         """from a group vector, get the list of indices that map to each group
@@ -44,6 +46,18 @@ class Mops:
         Returns:
             numpy.ndarray: a dense vector after appling group by
         """
+        if self.non_zero:
+
+            def funcwrapper(mat):
+                tmat = mat[mat != 0]
+                return func(tmat) if len(tmat) > 0 else 0
+
+            # ma_data = np.ma.masked_equal(self.matrix, 0.0)
+            return np.apply_along_axis(funcwrapper, axis, self.matrix)
+
+            # return np.apply_along_axis(
+            #     func, axis, self.matrix[self.matrix != 0]
+            # )
         return np.apply_along_axis(func, axis, self.matrix)
 
     def apply(
@@ -68,7 +82,7 @@ class Mops:
                 tmat = self._apply(func, axis=axis)
                 result = tmat[np.newaxis] if axis == 0 else tmat[np.newaxis].T
             else:
-                for g, kmat in self.iter(group, axis):
+                for _, kmat in self.iter(group, axis):
                     tmat = kmat._apply(func, axis=axis)
                     result.append(tmat)
                 result = np.stack(result, axis=axis)

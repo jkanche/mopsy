@@ -10,11 +10,14 @@ __copyright__ = "jkanche"
 __license__ = "MIT"
 
 
-def get_matrix_type(mat: Union[np.ndarray, sp.spmatrix]):
+def get_matrix_type(
+    mat: Union[np.ndarray, sp.spmatrix], non_zero: bool = False
+):
     """Get an internal matrix state
 
     Args:
         mat (Numpy.ndarray or scipy.sparse.spmatrix): a numpy or scipy matrix
+        non_zero (bool): filter zero values ?
 
     Raises:
         Exception: TypeNotSupported, when the matrix type is not supported
@@ -23,10 +26,10 @@ def get_matrix_type(mat: Union[np.ndarray, sp.spmatrix]):
         an internal matrix representation object
     """
     if isinstance(mat, np.ndarray):
-        return Nops(mat)
+        return Nops(mat, non_zero=non_zero)
 
     if isinstance(mat, sp.spmatrix):
-        return Sops(mat)
+        return Sops(mat, non_zero=non_zero)
 
     # TODO: zarr, xarray, idk what else, pandas df/sparsedf ?
 
