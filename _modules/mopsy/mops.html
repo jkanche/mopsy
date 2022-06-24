@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>mopsy.mops &mdash; mopsy 0.2.3 documentation</title>
+  <title>mopsy.mops &mdash; mopsy 0.2.4 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -28,7 +28,7 @@
             <a href="../../index.html" class="icon icon-home"> mopsy
           </a>
               <div class="version">
-                0.2.3
+                0.2.4
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -127,12 +127,8 @@
                 <span class="n">tmat</span> <span class="o">=</span> <span class="n">mat</span><span class="p">[</span><span class="n">mat</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">]</span>
                 <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">tmat</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tmat</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
 
-            <span class="c1"># ma_data = np.ma.masked_equal(self.matrix, 0.0)</span>
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">apply_along_axis</span><span class="p">(</span><span class="n">funcwrapper</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">matrix</span><span class="p">)</span>
 
-            <span class="c1"># return np.apply_along_axis(</span>
-            <span class="c1">#     func, axis, self.matrix[self.matrix != 0]</span>
-            <span class="c1"># )</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">apply_along_axis</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">matrix</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Mops.apply"><a class="viewcode-back" href="../../api/mopsy.html#mopsy.mops.Mops.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
@@ -200,7 +196,7 @@
                 <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">nmats</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">tmats</span> <span class="o">=</span> <span class="p">[]</span>
-                <span class="k">for</span> <span class="n">g</span><span class="p">,</span> <span class="n">kmat</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">kmat</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
                     <span class="n">tmats</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">kmat</span><span class="o">.</span><span class="n">_apply</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">funcs</span><span class="p">])</span>
 
                 <span class="n">nmats</span> <span class="o">=</span> <span class="p">[]</span>
