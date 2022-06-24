@@ -1,12 +1,13 @@
 import numpy as np
 from mopsy.sops import Sops
 from scipy.sparse import eye
+from statistics import mean
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"
 __license__ = "MIT"
 
-mat = eye(5)
+mat = eye(5).tocoo()
 group = ["col1", "col2", "col1", "col2", "col2"]
 
 

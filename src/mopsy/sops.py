@@ -63,10 +63,8 @@ class Sops(Mops):
         Returns:
             numpy.ndarray: a dense vector
         """
-
+        mat = self.matrix.tocsc() if axis == 0 else self.matrix.tocsr()
         if self.non_zero:
-            mat = self.matrix.tocsc() if axis == 0 else self.matrix.tocsr()
-
             # reduction along an axis
             fmat = np.zeros(mat.shape[1] if axis == 0 else mat.shape[0])
             for i in range(len(mat.indptr) - 1):
@@ -81,15 +79,14 @@ class Sops(Mops):
             return fmat if axis == 0 else fmat.T
         else:
             if func in [sum, mean, min, max]:
-                mat = None
                 if func == sum:
-                    mat = self.matrix.sum(axis=axis)
+                    mat = mat.sum(axis=axis)
                 elif func == mean:
-                    mat = self.matrix.mean(axis=axis)
+                    mat = mat.mean(axis=axis)
                 elif func == min:
-                    mat = self.matrix.min(axis=axis).todense()
+                    mat = mat.min(axis=axis).todense()
                 elif func == max:
-                    mat = self.matrix.max(axis=axis).todense()
+                    mat = mat.max(axis=axis).todense()
 
                 # flatten
                 tmat = mat.getA1()

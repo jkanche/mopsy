@@ -52,12 +52,8 @@ class Mops:
                 tmat = mat[mat != 0]
                 return func(tmat) if len(tmat) > 0 else 0
 
-            # ma_data = np.ma.masked_equal(self.matrix, 0.0)
             return np.apply_along_axis(funcwrapper, axis, self.matrix)
 
-            # return np.apply_along_axis(
-            #     func, axis, self.matrix[self.matrix != 0]
-            # )
         return np.apply_along_axis(func, axis, self.matrix)
 
     def apply(
@@ -125,7 +121,7 @@ class Mops:
                 result = np.stack(nmats)
             else:
                 tmats = []
-                for g, kmat in self.iter(group, axis):
+                for _, kmat in self.iter(group, axis):
                     tmats.append([kmat._apply(f, axis=axis) for f in funcs])
 
                 nmats = []
