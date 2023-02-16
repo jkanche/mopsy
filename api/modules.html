@@ -1,21 +1,20 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>mopsy &mdash; mopsy 0.2.4 documentation</title>
+  <title>mopsy &mdash; mopsy 0.2.5 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -28,14 +27,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> mopsy
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            mopsy
           </a>
               <div class="version">
-                0.2.4
+                0.2.5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -67,8 +70,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>mopsy</li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">mopsy</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/api/modules.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -84,11 +87,48 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="mopsy.html">mopsy package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="mopsy.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mopsy.html#module-mopsy.helpers">mopsy.helpers module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mopsy.html#module-mopsy.mops">mopsy.mops module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mopsy.html#module-mopsy.nops">mopsy.nops module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mopsy.html#module-mopsy.sops">mopsy.sops module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mopsy.html#module-mopsy.utils">mopsy.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mopsy.html#module-mopsy.helpers">mopsy.helpers module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mopsy.html#mopsy.helpers.apply"><code class="docutils literal notranslate"><span class="pre">apply()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="mopsy.html#mopsy.helpers.colmean"><code class="docutils literal notranslate"><span class="pre">colmean()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="mopsy.html#mopsy.helpers.colmedian"><code class="docutils literal notranslate"><span class="pre">colmedian()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="mopsy.html#mopsy.helpers.colsum"><code class="docutils literal notranslate"><span class="pre">colsum()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="mopsy.html#mopsy.helpers.multi_apply"><code class="docutils literal notranslate"><span class="pre">multi_apply()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="mopsy.html#mopsy.helpers.rowmean"><code class="docutils literal notranslate"><span class="pre">rowmean()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="mopsy.html#mopsy.helpers.rowmedian"><code class="docutils literal notranslate"><span class="pre">rowmedian()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="mopsy.html#mopsy.helpers.rowsum"><code class="docutils literal notranslate"><span class="pre">rowsum()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mopsy.html#module-mopsy.mops">mopsy.mops module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mopsy.html#mopsy.mops.Mops"><code class="docutils literal notranslate"><span class="pre">Mops</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mopsy.html#mopsy.mops.Mops.apply"><code class="docutils literal notranslate"><span class="pre">Mops.apply()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="mopsy.html#mopsy.mops.Mops.groupby_indices"><code class="docutils literal notranslate"><span class="pre">Mops.groupby_indices()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="mopsy.html#mopsy.mops.Mops.multi_apply"><code class="docutils literal notranslate"><span class="pre">Mops.multi_apply()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mopsy.html#module-mopsy.nops">mopsy.nops module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mopsy.html#mopsy.nops.Nops"><code class="docutils literal notranslate"><span class="pre">Nops</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mopsy.html#mopsy.nops.Nops.iter"><code class="docutils literal notranslate"><span class="pre">Nops.iter()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mopsy.html#module-mopsy.sops">mopsy.sops module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mopsy.html#mopsy.sops.Sops"><code class="docutils literal notranslate"><span class="pre">Sops</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mopsy.html#mopsy.sops.Sops.apply"><code class="docutils literal notranslate"><span class="pre">Sops.apply()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="mopsy.html#mopsy.sops.Sops.convert_sparse_type"><code class="docutils literal notranslate"><span class="pre">Sops.convert_sparse_type()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="mopsy.html#mopsy.sops.Sops.identify_sparse_type"><code class="docutils literal notranslate"><span class="pre">Sops.identify_sparse_type()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="mopsy.html#mopsy.sops.Sops.iter"><code class="docutils literal notranslate"><span class="pre">Sops.iter()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="mopsy.html#mopsy.sops.Sops.multi_apply"><code class="docutils literal notranslate"><span class="pre">Sops.multi_apply()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mopsy.html#module-mopsy.utils">mopsy.utils module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mopsy.html#mopsy.utils.get_matrix_type"><code class="docutils literal notranslate"><span class="pre">get_matrix_type()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="mopsy.html#module-mopsy">Module contents</a></li>
 </ul>
 </li>
