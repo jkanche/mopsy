@@ -4,6 +4,22 @@ mopsy package
 Submodules
 ----------
 
+mopsy.adders module
+-------------------
+
+.. automodule:: mopsy.adders
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+mopsy.checkutils module
+-----------------------
+
+.. automodule:: mopsy.checkutils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 mopsy.helpers module
 --------------------
 

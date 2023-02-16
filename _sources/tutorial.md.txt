@@ -50,13 +50,27 @@ apply(nz_func, mat, axis=1)
 
 ## Multiple functions
 
-`mopsy` also supports multiple functions. 
+`mopsy` also supports applying multiple functions at the same time. 
 
 ```python
 from mopsy import multi_apply
 import numpy as np
 
 multi_apply([np.sum, np.mean], mat, axis=0)
+```
+
+## Append rows or columns to a sparse matrix
+
+you can use append_row or append_col to add a new row or column to a sparse matrix. Usually helps save a few lines of code.
+
+```python
+from scipy.sparse import eye
+
+mat = eye(5).tocsr()
+
+tmat_wrow = append_row(mat, np.array([0, 0, 0, 0, 0]))
+
+tmat_wcol = append_col(mat, np.array([[0], [0], [0], [0], [0]]))
 ```
 
 That's all for today! 
