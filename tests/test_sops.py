@@ -32,103 +32,128 @@ def test_group_iter_cols():
 
 def test_group_apply_rows():
     tmat = Sops(mat)
-    rmat = tmat.apply(sum, group=group, axis=0)
-    assert rmat.shape[0] == 2
-    assert rmat.shape[1] == 5
-    assert rmat[0, :].flatten().tolist() == [1.0, 0.0, 1.0, 0.0, 0.0]
-    assert rmat[1, :].flatten().tolist() == [0.0, 1.0, 0.0, 1.0, 1.0]
+    rmat, rgroups = tmat.apply(sum, group=group, axis=0)
+    assert len(rgroups) == len(set(group))
+    assert rmat.shape == (2, 5)
+    assert rmat.toarray().tolist() == [
+        [1.0, 0.0, 1.0, 0.0, 0.0],
+        [0.0, 1.0, 0.0, 1.0, 1.0],
+    ]
 
 
 def test_group_apply_cols():
     tmat = Sops(mat)
-    rmat = tmat.apply(sum, group=group, axis=1)
-    assert rmat.shape[0] == 5
-    assert rmat.shape[1] == 2
-    assert rmat[:, 0].flatten().tolist() == [1.0, 0.0, 1.0, 0.0, 0.0]
-    assert rmat[:, 1].flatten().tolist() == [0.0, 1.0, 0.0, 1.0, 1.0]
+    rmat, rgroups = tmat.apply(sum, group=group, axis=1)
+    assert len(rgroups) == len(set(group))
+    assert rmat.shape == (5, 2)
+    assert rmat.toarray().tolist() == [
+        [1.0, 0.0],
+        [0.0, 1.0],
+        [1.0, 0.0],
+        [0.0, 1.0],
+        [0.0, 1.0],
+    ]
 
 
 def test_group_apply_row_None():
     tmat = Sops(mat)
-    rmat = tmat.apply(sum, group=None, axis=0)
+    rmat, rgroups = tmat.apply(sum, group=None, axis=0)
     assert rmat is not None
-    assert rmat.shape[0] == 1
-    assert rmat.shape[1] == 5
-    assert rmat[
-        :,
-    ].flatten().tolist() == [1.0, 1.0, 1.0, 1.0, 1.0]
+    assert rgroups is None
+    assert rmat.shape == (1, 5)
+    assert rmat.toarray().tolist() == [[1.0, 1.0, 1.0, 1.0, 1.0]]
 
 
 def test_group_apply_col_None():
     tmat = Sops(mat)
-    rmat = tmat.apply(sum, group=None, axis=1)
+    rmat, rgroups = tmat.apply(sum, group=None, axis=1)
     assert rmat is not None
-    assert rmat.shape[0] == 5
-    assert rmat.shape[1] == 1
-    assert rmat[
-        :,
-    ].flatten().tolist() == [1.0, 1.0, 1.0, 1.0, 1.0]
+    assert rgroups is None
+    assert rmat.shape == (5, 1)
+    assert rmat.toarray().tolist() == [[1.0], [1.0], [1.0], [1.0], [1.0]]
 
 
 def test_multi_apply_rows():
     tmat = Sops(mat)
-    rmat = tmat.multi_apply([np.sum, np.mean], axis=0)
+    rmat, rgroups = tmat.multi_apply([np.sum, np.mean], axis=0)
     assert rmat is not None
-    assert rmat.shape[0] == 2
-    assert rmat.shape[1] == 1
-    assert rmat.shape[2] == 5
-    assert rmat[:, 0].tolist() == [
-        [1.0, 1.0, 1.0, 1.0, 1.0],
-        [0.2, 0.2, 0.2, 0.2, 0.2],
-    ]
+    assert rgroups is None
+    assert len(rmat) == 2
+    assert rmat[0].shape[0] == 1
+    assert rmat[0].shape[1] == 5
+    assert rmat[0].toarray().tolist() == [[1.0, 1.0, 1.0, 1.0, 1.0]]
+    assert rmat[1].toarray().tolist() == [[0.2, 0.2, 0.2, 0.2, 0.2]]
 
 
 def test_multi_apply_cols():
     tmat = Sops(mat)
-    rmat = tmat.multi_apply([np.sum, np.mean], axis=1)
+    rmat, rgroups = tmat.multi_apply([np.sum, np.mean], axis=1)
     assert rmat is not None
-    assert rmat.shape[0] == 2
-    assert rmat.shape[1] == 5
-    assert rmat.shape[2] == 1
-    assert rmat[:, 0].tolist() == [[1.0], [0.2]]
+    assert len(rgroups) == len(set(group))
+    assert len(rmat) == 2
+    assert rmat[0].shape[0] == 5
+    assert rmat[0].shape[1] == 1
+    assert rmat[0].toarray().tolist() == [[1.0], [1.0], [1.0], [1.0], [1.0]]
+    assert rmat[1].toarray().tolist() == [[[0.2], [0.2], [0.2], [0.2], [0.2]]]
 
 
 def test_multi_apply_rows():
     tmat = Sops(mat)
-    rmat = tmat.multi_apply([np.sum, np.mean], group=group, axis=0)
+    rmat, rgroups = tmat.multi_apply([np.sum, np.mean], group=group, axis=0)
     assert rmat is not None
-    assert rmat.shape[0] == 2
-    assert rmat.shape[1] == 2
-    assert rmat.shape[2] == 5
-    assert rmat[:, 0].tolist() == [
+    assert len(rgroups) == len(set(group))
+    assert len(rmat) == 2
+    assert len(rmat) == 2
+    assert rmat[0].toarray().tolist() == [
         [1.0, 0.0, 1.0, 0.0, 0.0],
+        [0.0, 1.0, 0.0, 1.0, 1.0],
+    ]
+    assert rmat[1].toarray().tolist() == [
         [0.5, 0.0, 0.5, 0.0, 0.0],
+        [0.0, 0.3333333333333333, 0.0, 0.3333333333333333, 0.3333333333333333],
     ]
 
 
 def test_multi_apply_cols():
     tmat = Sops(mat)
-    rmat = tmat.multi_apply([np.sum, np.mean], group=group, axis=1)
+    rmat, rgroups = tmat.multi_apply([np.sum, np.mean], group=group, axis=1)
     assert rmat is not None
-    assert rmat.shape[0] == 2
-    assert rmat.shape[1] == 5
-    assert rmat.shape[2] == 2
-    assert rmat[:, 0].tolist() == [[1.0, 0.0], [0.5, 0.0]]
+    assert len(rgroups) == len(set(group))
+    assert len(rmat) == 2
+    assert rmat[0].toarray().tolist() == [
+        [1.0, 0.0],
+        [0.0, 1.0],
+        [1.0, 0.0],
+        [0.0, 1.0],
+        [0.0, 1.0],
+    ]
+    assert rmat[1].toarray().tolist() == [
+        [0.5, 0.0],
+        [0.0, 0.3333333333333333],
+        [0.5, 0.0],
+        [0.0, 0.3333333333333333],
+        [0.0, 0.3333333333333333],
+    ]
 
 
 def test_group_apply_rows_nnzero():
     tmat = Sops(mat, non_zero=True)
-    rmat = tmat.apply(sum, group=group, axis=0)
-    assert rmat.shape[0] == 2
-    assert rmat.shape[1] == 5
-    assert rmat[0, :].flatten().tolist() == [1.0, 0.0, 1.0, 0.0, 0.0]
-    assert rmat[1, :].flatten().tolist() == [0.0, 1.0, 0.0, 1.0, 1.0]
+    rmat, rgroups = tmat.apply(sum, group=group, axis=0)
+    assert len(rgroups) == len(set(group))
+    assert rmat.toarray().tolist() == [
+        [1.0, 0.0, 1.0, 0.0, 0.0],
+        [0.0, 1.0, 0.0, 1.0, 1.0],
+    ]
 
 
 def test_group_apply_cols_nnzero():
     tmat = Sops(mat, non_zero=True)
-    rmat = tmat.apply(sum, group=group, axis=1)
-    assert rmat.shape[0] == 5
-    assert rmat.shape[1] == 2
-    assert rmat[:, 0].flatten().tolist() == [1.0, 0.0, 1.0, 0.0, 0.0]
-    assert rmat[:, 1].flatten().tolist() == [0.0, 1.0, 0.0, 1.0, 1.0]
+    rmat, rgroups = tmat.apply(sum, group=group, axis=1)
+    assert len(rgroups) == len(set(group))
+    assert rmat.toarray().tolist() == [
+        [1.0, 0.0],
+        [0.0, 1.0],
+        [1.0, 0.0],
+        [0.0, 1.0],
+        [0.0, 1.0],
+    ]

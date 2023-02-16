@@ -13,12 +13,10 @@ group = ["col1", "col2", "col1", "col2", "col2"]
 
 def test_apply_cols():
     tmat = apply(mean, mat, 1, None, False)
-    print(tmat)
     assert tmat is not None
 
 
 def test_multiapply_cols():
     rmat = multi_apply([mean], mat, 1, None, False)
-    print(rmat)
     assert rmat is not None
 

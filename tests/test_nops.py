@@ -32,7 +32,8 @@ def test_group_iter_cols():
 
 def test_group_apply_rows():
     tmat = Nops(mat)
-    rmat = tmat.apply(sum, group=group, axis=0)
+    rmat, rgroups = tmat.apply(sum, group=group, axis=0)
+    assert len(rgroups) == len(set(group))
     assert rmat.shape[0] == 2
     assert rmat.shape[1] == 5
     assert rmat[0, :].flatten().tolist() == [1.0, 0.0, 1.0, 0.0, 0.0]
@@ -41,7 +42,8 @@ def test_group_apply_rows():
 
 def test_group_apply_cols():
     tmat = Nops(mat)
-    rmat = tmat.apply(sum, group=group, axis=1)
+    rmat, rgroups = tmat.apply(sum, group=group, axis=1)
+    assert len(rgroups) == len(set(group))
     assert rmat.shape[0] == 5
     assert rmat.shape[1] == 2
     assert rmat[:, 0].flatten().tolist() == [1.0, 0.0, 1.0, 0.0, 0.0]
@@ -50,103 +52,118 @@ def test_group_apply_cols():
 
 def test_group_apply_row_None():
     tmat = Nops(mat)
-    rmat = tmat.apply(sum, group=None, axis=0)
+    rmat, rgroups = tmat.apply(sum, group=None, axis=0)
     assert rmat is not None
+    assert rgroups is None
     assert rmat.shape[0] == 1
     assert rmat.shape[1] == 5
-    assert rmat[
-        :,
-    ].flatten().tolist() == [1.0, 1.0, 1.0, 1.0, 1.0]
+    assert rmat[:,].flatten().tolist() == [1.0, 1.0, 1.0, 1.0, 1.0]
 
 
 def test_group_apply_col_None():
     tmat = Nops(mat)
-    rmat = tmat.apply(sum, group=None, axis=1)
+    rmat, rgroups = tmat.apply(sum, group=None, axis=1)
     assert rmat is not None
+    assert rgroups is None
     assert rmat.shape[0] == 5
     assert rmat.shape[1] == 1
-    assert rmat[
-        :,
-    ].flatten().tolist() == [1.0, 1.0, 1.0, 1.0, 1.0]
+    assert rmat[:,].flatten().tolist() == [1.0, 1.0, 1.0, 1.0, 1.0]
 
 
 def test_multi_apply_rows_None():
     tmat = Nops(mat)
-    rmat = tmat.multi_apply([np.sum, np.mean], axis=0)
+    rmat, rgroups = tmat.multi_apply([np.sum, np.mean], axis=0)
     assert rmat is not None
-    assert rmat.shape[0] == 2
-    assert rmat.shape[1] == 1
-    assert rmat.shape[2] == 5
-    assert rmat[:, 0].tolist() == [
-        [1.0, 1.0, 1.0, 1.0, 1.0],
-        [0.2, 0.2, 0.2, 0.2, 0.2],
-    ]
+    assert rgroups is None
+    assert len(rmat) == 2
+    assert rmat[0].shape[0] == 1
+    assert rmat[0].shape[1] == 5
+    assert rmat[0].tolist() == [[1.0, 1.0, 1.0, 1.0, 1.0]]
+    assert rmat[1].tolist() == [[0.2, 0.2, 0.2, 0.2, 0.2]]
 
 
 def test_multi_apply_cols_None():
     tmat = Nops(mat)
-    rmat = tmat.multi_apply([np.sum, np.mean], axis=1)
+    rmat, rgroups = tmat.multi_apply([np.sum, np.mean], axis=1)
     assert rmat is not None
-    assert rmat.shape[0] == 2
-    assert rmat.shape[1] == 5
-    assert rmat.shape[2] == 1
-    assert rmat[:, 0].tolist() == [[1.0], [0.2]]
+    assert rgroups is None
+    assert len(rmat) == 2
+    assert rmat[0].shape[0] == 5
+    assert rmat[0].shape[1] == 1
+    assert rmat[0].tolist() == [[1.0], [1.0], [1.0], [1.0], [1.0]]
+    assert rmat[1].tolist() == [[0.2], [0.2], [0.2], [0.2], [0.2]]
 
 
 def test_multi_apply_rows():
     tmat = Nops(mat)
-    rmat = tmat.multi_apply([np.sum, np.mean], group=group, axis=0)
+    rmat, rgroups = tmat.multi_apply([np.sum, np.mean], group=group, axis=0)
     assert rmat is not None
-    assert rmat.shape[0] == 2
-    assert rmat.shape[1] == 2
-    assert rmat.shape[2] == 5
-    assert rmat[:, 0].tolist() == [
-        [1.0, 0.0, 1.0, 0.0, 0.0],
+    assert len(rgroups) == len(set(group))
+    assert len(rmat) == 2
+    assert rmat[0].shape[0] == 2
+    assert rmat[0].shape[1] == 5
+    assert rmat[0].tolist() == [[1.0, 0.0, 1.0, 0.0, 0.0], [0.0, 1.0, 0.0, 1.0, 1.0]]
+    assert rmat[1].tolist() == [
         [0.5, 0.0, 0.5, 0.0, 0.0],
+        [0.0, 0.3333333333333333, 0.0, 0.3333333333333333, 0.3333333333333333],
     ]
 
 
 def test_multi_apply_cols():
     tmat = Nops(mat)
-    rmat = tmat.multi_apply([np.sum, np.mean], group=group, axis=1)
+    rmat, rgroups = tmat.multi_apply([np.sum, np.mean], group=group, axis=1)
     assert rmat is not None
-    assert rmat.shape[0] == 2
-    assert rmat.shape[1] == 5
-    assert rmat.shape[2] == 2
-    assert rmat[:, 0].tolist() == [[1.0, 0.0], [0.5, 0.0]]
+    assert len(rgroups) == len(set(group))
+    assert len(rmat) == 2
+    assert rmat[0].shape[0] == 5
+    assert rmat[0].shape[1] == 2
+    assert rmat[0].tolist() == [
+        [1.0, 0.0],
+        [0.0, 1.0],
+        [1.0, 0.0],
+        [0.0, 1.0],
+        [0.0, 1.0],
+    ]
+    assert rmat[1].tolist() == [
+        [0.5, 0.0],
+        [0.0, 0.3333333333333333],
+        [0.5, 0.0],
+        [0.0, 0.3333333333333333],
+        [0.0, 0.3333333333333333],
+    ]
 
 
 def test_group_apply_rows_nnzero():
     tmat = Nops(mat, non_zero=True)
-    rmat = tmat.apply(sum, group=group, axis=0)
+    rmat, rgroups = tmat.apply(sum, group=group, axis=0)
+    assert len(rgroups) == len(set(group))
     assert rmat.shape[0] == 2
     assert rmat.shape[1] == 5
-    assert rmat[0, :].flatten().tolist() == [1.0, 0.0, 1.0, 0.0, 0.0]
-    assert rmat[1, :].flatten().tolist() == [0.0, 1.0, 0.0, 1.0, 1.0]
+    assert rmat.tolist() == [[1.0, 0.0, 1.0, 0.0, 0.0], [0.0, 1.0, 0.0, 1.0, 1.0]]
 
 
 def test_group_apply_cols_nnzero():
     tmat = Nops(mat, non_zero=True)
-    rmat = tmat.apply(sum, group=group, axis=1)
+    rmat, rgroups = tmat.apply(sum, group=group, axis=1)
+    assert len(rgroups) == len(set(group))
     assert rmat.shape[0] == 5
     assert rmat.shape[1] == 2
-    assert rmat[:, 0].flatten().tolist() == [1.0, 0.0, 1.0, 0.0, 0.0]
-    assert rmat[:, 1].flatten().tolist() == [0.0, 1.0, 0.0, 1.0, 1.0]
+    assert rmat.tolist() == [[1.0, 0.0], [0.0, 1.0], [1.0, 0.0], [0.0, 1.0], [0.0, 1.0]]
 
 
 def test_group_apply_rows_mean_nnzero():
     tmat = Nops(mat, non_zero=True)
-    rmat = tmat.apply(mean, group=group, axis=0)
+    rmat, rgroups = tmat.apply(mean, group=group, axis=0)
+    assert len(rgroups) == len(set(group))
     assert rmat.shape[0] == 2
     assert rmat.shape[1] == 5
-    assert rmat[0, :].flatten().tolist() == [1.0, 0.0, 1.0, 0.0, 0.0]
-    assert rmat[1, :].flatten().tolist() == [0.0, 1.0, 0.0, 1.0, 1.0]
+    assert rmat.tolist() == [[1.0, 0.0, 1.0, 0.0, 0.0], [0.0, 1.0, 0.0, 1.0, 1.0]]
 
 
 def test_group_apply_cols_mean_nnzero():
     tmat = Nops(mat, non_zero=True)
-    rmat = tmat.apply(mean, group=group, axis=1)
+    rmat, rgroups = tmat.apply(mean, group=group, axis=1)
+    assert len(rgroups) == len(set(group))
     assert rmat.shape[0] == 5
     assert rmat.shape[1] == 2
-    assert rmat[:, 0].flatten().tolist() == [1.0, 0.0, 1.0, 0.0, 0.0]
-    assert rmat[:, 1].flatten().tolist() == [0.0, 1.0, 0.0, 1.0, 1.0]
+    assert rmat.tolist() == [[1.0, 0.0], [0.0, 1.0], [1.0, 0.0], [0.0, 1.0], [0.0, 1.0]]

@@ -1,6 +1,6 @@
 from itertools import groupby
 import numpy as np
-from typing import Any, Callable, List
+from typing import Any, Callable, Tuple, Optional, Sequence
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"
@@ -20,8 +20,8 @@ class Mops:
         self.matrix = mat
         self.non_zero = non_zero
 
-    def groupby_indices(self, group: list) -> dict:
-        """from a group vector, get the list of indices that map to each group
+    def groupby_indices(self, group: Sequence) -> dict:
+        """From a group vector, get the list of indices that map to each group
 
         Args:
             group (list): group variable, any list or array like object
@@ -37,7 +37,7 @@ class Mops:
         }
 
     def _apply(self, func: Callable[[list], Any], axis: int):
-        """internal function that wraps numpy's apply_along_axis
+        """Internal function that wraps numpy's apply_along_axis
 
         Args:
             func (Callable): a function to apply
@@ -57,9 +57,12 @@ class Mops:
         return np.apply_along_axis(func, axis, self.matrix)
 
     def apply(
-        self, func: Callable[[list], Any], group: list = None, axis: int = 0
-    ) -> np.ndarray:
-        """apply a function to groups along an axis
+        self,
+        func: Callable[[list], Any],
+        group: Sequence = None,
+        axis: int = 0,
+    ) -> Tuple[np.ndarray, Optional[Sequence]]:
+        """Apply a function to groups along an axis
 
         Args:
             func (Callable): a function to apply
@@ -70,30 +73,33 @@ class Mops:
             Exception: ApplyFuncError, when a function cannot be applied
 
         Returns:
-            numpy.ndarray: a matrix
+            Tuple[np.ndarray, Optional[Sequence]]: a tuple of matrix and its labels
         """
-        result = []
+        result = None
+        rgroups = None
         try:
             if group is None:
                 tmat = self._apply(func, axis=axis)
                 result = tmat[np.newaxis] if axis == 0 else tmat[np.newaxis].T
             else:
-                for _, kmat in self.iter(group, axis):
+                rgroups = []
+                result = []
+                for kcat, kmat in self.iter(group, axis):
                     tmat = kmat._apply(func, axis=axis)
                     result.append(tmat)
+                    rgroups.append(kcat)
                 result = np.stack(result, axis=axis)
         except Exception as e:
-            print(f"Error: applying function: {str(e)}")
-            raise Exception("ApplyFuncError")
+            raise Exception(f"Error: applying function: {str(e)}")
 
-        return result
+        return result, rgroups
 
     def multi_apply(
         self,
-        funcs: List[Callable[[list], Any]],
+        funcs: Sequence[Callable[[list], Any]],
         group: list = None,
         axis: int = 0,
-    ) -> np.ndarray:
+    ) -> Tuple[np.ndarray, Optional[Sequence]]:
         """Apply multiple functions, the first axis
         of the ndarray specifies the results of the inputs functions in
         the same order
@@ -107,31 +113,33 @@ class Mops:
             Exception: ApplyFuncError, when a function cannot be applied
 
         Returns:
-            numpy.ndarray: a matrix
+            Tuple[np.ndarray, Optional[Sequence]]: a tuple of matrix and its labels
         """
-        result = []
+        result = None
+        rgroups = None
         try:
-
             if group is None:
+
                 tmats = [self._apply(f, axis=axis) for f in funcs]
                 nmats = [
                     x[np.newaxis] if axis == 0 else x[np.newaxis].T
                     for x in tmats
                 ]
-                result = np.stack(nmats)
+                result = nmats
             else:
+                rgroups = []
                 tmats = []
-                for _, kmat in self.iter(group, axis):
+                for kcat, kmat in self.iter(group, axis):
                     tmats.append([kmat._apply(f, axis=axis) for f in funcs])
+                    rgroups.append(kcat)
 
                 nmats = []
                 for smats in zip(*tmats):
                     nmats.append(np.stack(smats, axis=axis))
 
-                result = np.stack(nmats)
+                result = nmats
 
         except Exception as e:
-            print(f"Error: applying function: {str(e)}")
-            raise Exception("ApplyFuncError")
+            raise Exception(f"Error: applying function: {str(e)}")
 
-        return result
+        return result, rgroups

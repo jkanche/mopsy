@@ -1,7 +1,7 @@
 from statistics import mean, median
 from .utils import get_matrix_type
 
-from typing import List, Union, Callable, Any
+from typing import Sequence, Union, Callable, Any
 import numpy
 import scipy
 
@@ -12,14 +12,14 @@ __license__ = "MIT"
 
 def colsum(
     mat: Union[numpy.ndarray, scipy.sparse.spmatrix],
-    group: list = None,
+    group: Sequence = None,
     non_zero: bool = False,
 ) -> numpy.ndarray:
-    """apply colsum
+    """Apply colsum
 
     Args:
         mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix
-        group (list, optional): group variable. Defaults to None.
+        group (Sequence, optional): group variable. Defaults to None.
         non_zero (bool): filter zero values ?
 
     Returns:
@@ -30,14 +30,14 @@ def colsum(
 
 def rowsum(
     mat: Union[numpy.ndarray, scipy.sparse.spmatrix],
-    group: list = None,
+    group: Sequence = None,
     non_zero: bool = False,
 ) -> numpy.ndarray:
-    """apply rowsum
+    """Apply rowsum
 
     Args:
         mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix
-        group (list, optional): group variable. Defaults to None.
+        group (Sequence, optional): group variable. Defaults to None.
         non_zero (bool): filter zero values ?
 
     Returns:
@@ -48,14 +48,14 @@ def rowsum(
 
 def colmean(
     mat: Union[numpy.ndarray, scipy.sparse.spmatrix],
-    group: list = None,
+    group: Sequence = None,
     non_zero: bool = False,
 ) -> numpy.ndarray:
-    """apply colmean
+    """Apply colmean
 
     Args:
         mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix
-        group (list, optional): group variable. Defaults to None.
+        group (Sequence, optional): group variable. Defaults to None.
         non_zero (bool): filter zero values ?
 
     Returns:
@@ -66,14 +66,14 @@ def colmean(
 
 def rowmean(
     mat: Union[numpy.ndarray, scipy.sparse.spmatrix],
-    group: list = None,
+    group: Sequence = None,
     non_zero: bool = False,
 ) -> numpy.ndarray:
-    """apply rowmean
+    """Apply rowmean
 
     Args:
         mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix
-        group (list, optional): group variable. Defaults to None.
+        group (Sequence, optional): group variable. Defaults to None.
         non_zero (bool): filter zero values ?
 
     Returns:
@@ -84,14 +84,14 @@ def rowmean(
 
 def colmedian(
     mat: Union[numpy.ndarray, scipy.sparse.spmatrix],
-    group: list = None,
+    group: Sequence = None,
     non_zero: bool = False,
 ) -> numpy.ndarray:
-    """apply colmedian
+    """Apply colmedian
 
     Args:
         mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix
-        group (list, optional): group variable. Defaults to None.
+        group (Sequence, optional): group variable. Defaults to None.
         non_zero (bool): filter zero values ?
 
     Returns:
@@ -102,14 +102,14 @@ def colmedian(
 
 def rowmedian(
     mat: Union[numpy.ndarray, scipy.sparse.spmatrix],
-    group: list = None,
+    group: Sequence = None,
     non_zero: bool = False,
 ) -> numpy.ndarray:
-    """apply rowmedian
+    """Apply rowmedian
 
     Args:
         mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix
-        group (list, optional): group variable. Defaults to None.
+        group (Sequence, optional): group variable. Defaults to None.
         non_zero (bool): filter zero values ?
 
     Returns:
@@ -122,15 +122,15 @@ def apply(
     func: Callable[[list], Any],
     mat: Union[numpy.ndarray, scipy.sparse.spmatrix],
     axis: int,
-    group: list = None,
+    group: Sequence = None,
     non_zero: bool = False,
 ):
-    """a generic apply function
+    """A generic apply function
 
     Args:
         func (Callable): function to be called.
         mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix
-        group (list, optional): group variable. Defaults to None.
+        group (Sequence, optional): group variable. Defaults to None.
         axis (int): 0 for rows, 1 for columns.
         non_zero (bool): filter zero values ?
 
@@ -142,10 +142,10 @@ def apply(
 
 
 def multi_apply(
-    funcs: List[Callable[[list], Any]],
+    funcs: Sequence[Callable[[list], Any]],
     mat: Union[numpy.ndarray, scipy.sparse.spmatrix],
     axis: int,
-    group: list = None,
+    group: Sequence = None,
     non_zero: bool = False,
 ):
     """Apply multiple functions, the first axis
@@ -153,9 +153,9 @@ def multi_apply(
         the same order
 
     Args:
-        funcs (List[Callable[[list], Any]]): functions to be called.
+        funcs (Sequence[Callable[[list], Any]]): functions to be called.
         mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix
-        group (list, optional): group variable. Defaults to None.
+        group (Sequence, optional): group variable. Defaults to None.
         axis (int): 0 for rows, 1 for columns.
         non_zero (bool): filter zero values ?
 

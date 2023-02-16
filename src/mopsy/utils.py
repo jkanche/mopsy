@@ -33,5 +33,6 @@ def get_matrix_type(
 
     # TODO: zarr, xarray, idk what else, pandas df/sparsedf ?
 
-    print(f"{type(mat)} is not supported")
-    raise Exception("TypeNotSupported")
+    raise TypeError(
+        f"mat is neither a numpy nor sparse matrix. provided {type(mat)}"
+    )
