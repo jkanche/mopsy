@@ -22,3 +22,4 @@ finally:
     del version, PackageNotFoundError
 
 from .helpers import *
+from .adders import *

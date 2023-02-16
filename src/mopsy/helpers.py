@@ -1,5 +1,6 @@
 from statistics import mean, median
 from .utils import get_matrix_type
+from .checkutils import check_axis
 
 from typing import Sequence, Union, Callable, Any
 import numpy
@@ -121,7 +122,7 @@ def rowmedian(
 def apply(
     func: Callable[[list], Any],
     mat: Union[numpy.ndarray, scipy.sparse.spmatrix],
-    axis: int,
+    axis: Union[int, bool],
     group: Sequence = None,
     non_zero: bool = False,
 ):
@@ -131,12 +132,14 @@ def apply(
         func (Callable): function to be called.
         mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix
         group (Sequence, optional): group variable. Defaults to None.
-        axis (int): 0 for rows, 1 for columns.
+        axis (Union[int, bool]): 0 for rows, 1 for columns.
         non_zero (bool): filter zero values ?
 
     Returns:
         numpy.ndarray: matrix
     """
+    check_axis(axis)
+
     tmat = get_matrix_type(mat, non_zero=non_zero)
     return tmat.apply(func, group=group, axis=axis)
 
@@ -144,7 +147,7 @@ def apply(
 def multi_apply(
     funcs: Sequence[Callable[[list], Any]],
     mat: Union[numpy.ndarray, scipy.sparse.spmatrix],
-    axis: int,
+    axis: Union[int, bool],
     group: Sequence = None,
     non_zero: bool = False,
 ):
@@ -156,11 +159,13 @@ def multi_apply(
         funcs (Sequence[Callable[[list], Any]]): functions to be called.
         mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix
         group (Sequence, optional): group variable. Defaults to None.
-        axis (int): 0 for rows, 1 for columns.
+        axis (Union[int, bool]): 0 for rows, 1 for columns.
         non_zero (bool): filter zero values ?
 
     Returns:
         numpy.ndarray: matrix
     """
+    check_axis(axis)
+
     tmat = get_matrix_type(mat, non_zero=non_zero)
     return tmat.multi_apply(funcs, group=group, axis=axis)

@@ -1,4 +1,4 @@
-from typing import Iterator, Tuple
+from typing import Iterator, Tuple, Union, Sequence
 from .mops import Mops
 
 import numpy as np
@@ -20,12 +20,14 @@ class Nops(Mops):
         """
         super().__init__(mat, non_zero=non_zero)
 
-    def iter(self, group=None, axis=0) -> Iterator[Tuple]:
+    def iter(
+        self, group: Sequence[str] = None, axis: Union[int, bool] = 0
+    ) -> Iterator[Tuple]:
         """Iterator over groups and an axis
 
         Args:
-            group (list, optional): group variable. Defaults to None.
-            axis (int, optional): 0 for rows, 1 for columns. Defaults to 0.
+            group (Sequence[str], optional): group variable. Defaults to None.
+            axis (Union[int, bool], optional): 0 for rows, 1 for columns. Defaults to 0.
 
         Yields:
             Tuple (str, Nops): of group and the submatrix

@@ -5,7 +5,7 @@ from scipy import sparse as sp
 import numpy as np
 from statistics import mean
 
-from typing import Callable, Any, Iterator, Tuple, Sequence, Optional
+from typing import Callable, Any, Iterator, Tuple, Sequence, Optional, Union
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"
@@ -24,12 +24,12 @@ class Sops(Mops):
         """
         super().__init__(mat, non_zero=non_zero)
 
-    def iter(self, group: list = None, axis: int = 0) -> Iterator[Tuple]:
+    def iter(self, group: list = None, axis: Union[int, bool] = 0) -> Iterator[Tuple]:
         """Iterator over groups and an axis
 
         Args:
             group (list, optional): group variable. Defaults to None.
-            axis (int, optional): 0 for rows, 1 for columns. Defaults to 0.
+            axis (Union[int, bool], optional): 0 for rows, 1 for columns. Defaults to 0.
 
         Yields:
             tuple (str, matrix): of group and the submatrix
@@ -48,12 +48,12 @@ class Sops(Mops):
                 else:
                     yield (k, Sops(mat[:, v], self.non_zero))
 
-    def _apply(self, func: Callable[[list], Any], axis: int = 0) -> np.ndarray:
+    def _apply(self, func: Callable[[list], Any], axis: Union[int, bool] = 0) -> np.ndarray:
         """Apply a function over the matrix
 
         Args:
             func (Callable): function to apply over row or col wise vectors
-            axis (int, optional): 0 for rows, 1 for columns. Defaults to 0.
+            axis (Union[int, bool], optional): 0 for rows, 1 for columns. Defaults to 0.
 
         Returns:
             numpy.ndarray: a dense vector
@@ -94,14 +94,14 @@ class Sops(Mops):
         self,
         func: Callable[[list], Any],
         group: Sequence = None,
-        axis: int = 0,
+        axis: Union[int, bool] = 0,
     ) -> Tuple[np.ndarray, Optional[Sequence]]:
         """Apply a function to groups along an axis
 
         Args:
             func (Callable): a function to apply
             group (list, optional): group variable. Defaults to None.
-            axis (int, optional): 0 for rows, 1 for columns. Defaults to 0.
+            axis (Union[int, bool], optional): 0 for rows, 1 for columns. Defaults to 0.
 
         Raises:
             Exception: ApplyFuncError, when a function cannot be applied
@@ -109,10 +109,10 @@ class Sops(Mops):
         Returns:
             Tuple[np.ndarray, Optional[Sequence]]: a tuple of matrix and its labels
         """
-        original_sparse_type = self.identify_sparse_type()
+        original_sparse_type = Sops.identify_sparse_type(self.matrix)
         mat, groups = super().apply(func, group, axis)
 
-        cmat = self.convert_sparse_type(mat, original_sparse_type)
+        cmat = Sops.convert_sparse_type(mat, original_sparse_type)
 
         return cmat, groups
 
@@ -120,7 +120,7 @@ class Sops(Mops):
         self,
         funcs: Sequence[Callable[[list], Any]],
         group: list = None,
-        axis: int = 0,
+        axis: Union[int, bool] = 0,
     ) -> Tuple[np.ndarray, Optional[Sequence]]:
         """Apply multiple functions, the first axis
         of the ndarray specifies the results of the inputs functions in
@@ -129,7 +129,7 @@ class Sops(Mops):
         Args:
             funcs (List[Callable[[list], Any]]): functions to be called.
             group (list, optional): group variable. Defaults to None.
-            axis (int, optional): 0 for rows, 1 for columns. Defaults to 0.
+            axis (Union[int, bool], optional): 0 for rows, 1 for columns. Defaults to 0.
 
         Raises:
             Exception: ApplyFuncError, when a function cannot be applied
@@ -137,16 +137,20 @@ class Sops(Mops):
         Returns:
             Tuple[np.ndarray, Optional[Sequence]]: a tuple of matrix and its labels
         """
-        original_sparse_type = self.identify_sparse_type()
+        original_sparse_type = Sops.identify_sparse_type(self.matrix)
         mats, groups = super().multi_apply(funcs, group, axis)
         cmats = [
-            self.convert_sparse_type(m, original_sparse_type) for m in mats
+            Sops.convert_sparse_type(m, original_sparse_type) for m in mats
         ]
 
         return cmats, groups
 
-    def identify_sparse_type(self):
+    @staticmethod
+    def identify_sparse_type(mat: sp.spmatrix):
         """Identify the sparse matrix format
+
+        Args:
+            mat (scipy.sparse.spmatrix): a scipy matrix
 
         Raises:
             TypeError: matrix is not sparse
@@ -154,27 +158,28 @@ class Sops(Mops):
         Returns:
             an internal matrix representation object
         """
-        if not isinstance(self.matrix, sp.spmatrix):
+        if not isinstance(mat, sp.spmatrix):
             raise TypeError(
-                f"mat is not a sparse representation, it is {type(self.matrix)}"
+                f"mat is not a sparse representation, it is {type(mat)}"
             )
 
-        if sp.isspmatrix_csc(self.matrix):
+        if sp.isspmatrix_csc(mat):
             return "csc"
-        elif sp.isspmatrix_csr(self.matrix):
+        elif sp.isspmatrix_csr(mat):
             return "csr"
-        elif sp.isspmatrix_bsr(self.matrix):
+        elif sp.isspmatrix_bsr(mat):
             return "bsr"
-        elif sp.isspmatrix_coo(self.matrix):
+        elif sp.isspmatrix_coo(mat):
             return "coo"
-        elif sp.isspmatrix_dia(self.matrix):
+        elif sp.isspmatrix_dia(mat):
             return "dia"
-        elif sp.isspmatrix_dok(self.matrix):
+        elif sp.isspmatrix_dok(mat):
             return "dok"
-        elif sp.isspmatrix_lil(self.matrix):
+        elif sp.isspmatrix_lil(mat):
             return "lil"
 
-    def convert_sparse_type(self, mat: sp.spmatrix, format: str):
+    @staticmethod
+    def convert_sparse_type(mat: sp.spmatrix, format: str):
         """Convert to a sparse matrix format
 
         Args:
@@ -187,22 +192,35 @@ class Sops(Mops):
         Returns:
             an internal matrix representation object
         """
-        if not isinstance(mat, np.ndarray):
-            raise TypeError(
-                f"mat is not a sparse representation, it is {type(mat)}"
-            )
-
-        if format == "csc":
-            return sp.csc_matrix(mat)
-        elif format == "csr":
-            return sp.csr_matrix(mat)
-        elif format == "bsr":
-            return sp.bsr_matrix(mat)
-        elif format == "coo":
-            return sp.coo_matrix(mat)
-        elif format == "dia":
-            return sp.dia_matrix(mat)
-        elif format == "dok":
-            return sp.dok_matrix(mat)
-        elif format == "lil":
-            return sp.lil_matrix(mat)
+        if isinstance(mat, np.ndarray):
+            if format == "csc":
+                return sp.csc_matrix(mat)
+            elif format == "csr":
+                return sp.csr_matrix(mat)
+            elif format == "bsr":
+                return sp.bsr_matrix(mat)
+            elif format == "coo":
+                return sp.coo_matrix(mat)
+            elif format == "dia":
+                return sp.dia_matrix(mat)
+            elif format == "dok":
+                return sp.dok_matrix(mat)
+            elif format == "lil":
+                return sp.lil_matrix(mat)
+        elif isinstance(mat, sp.spmatrix):
+            if format == "csc":
+                return mat.tocsc()
+            elif format == "csr":
+                return mat.tocsr()
+            elif format == "bsr":
+                return mat.tobsr()
+            elif format == "coo":
+                return mat.tocoo()
+            elif format == "dia":
+                return mat.todia()
+            elif format == "dok":
+                return mat.todok()
+            elif format == "lil":
+                return mat.tolil()
+        else:
+            raise Exception(f"unknown matrix format")

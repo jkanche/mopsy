@@ -10,9 +10,7 @@ __copyright__ = "jkanche"
 __license__ = "MIT"
 
 
-def get_matrix_type(
-    mat: Union[np.ndarray, sp.spmatrix], non_zero: bool = False
-):
+def get_matrix_type(mat: Union[np.ndarray, sp.spmatrix], non_zero: bool = False):
     """Get an internal matrix state
 
     Args:
@@ -33,6 +31,4 @@ def get_matrix_type(
 
     # TODO: zarr, xarray, idk what else, pandas df/sparsedf ?
 
-    raise TypeError(
-        f"mat is neither a numpy nor sparse matrix. provided {type(mat)}"
-    )
+    raise TypeError(f"mat is neither a numpy nor sparse matrix. provided {type(mat)}")

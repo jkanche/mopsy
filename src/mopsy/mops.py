@@ -1,6 +1,8 @@
 from itertools import groupby
 import numpy as np
-from typing import Any, Callable, Tuple, Optional, Sequence
+from typing import Any, Callable, Tuple, Optional, Sequence, Union
+
+from .checkutils import check_axis
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"
@@ -36,12 +38,12 @@ class Mops:
             )
         }
 
-    def _apply(self, func: Callable[[list], Any], axis: int):
+    def _apply(self, func: Callable[[list], Any], axis: Union[int, bool]):
         """Internal function that wraps numpy's apply_along_axis
 
         Args:
             func (Callable): a function to apply
-            axis (int): 0 for rows, 1 for columns
+            axis (Union[int, bool]): 0 for rows, 1 for columns
 
         Returns:
             numpy.ndarray: a dense vector after appling group by
@@ -60,21 +62,25 @@ class Mops:
         self,
         func: Callable[[list], Any],
         group: Sequence = None,
-        axis: int = 0,
+        axis: Union[int, bool] = 0,
     ) -> Tuple[np.ndarray, Optional[Sequence]]:
         """Apply a function to groups along an axis
 
         Args:
             func (Callable): a function to apply
             group (list, optional): group variable. Defaults to None.
-            axis (int, optional): 0 for rows, 1 for columns. Defaults to 0.
+            axis (Union[int, bool], optional): 0 for rows, 1 for columns. Defaults to 0.
 
         Raises:
             Exception: ApplyFuncError, when a function cannot be applied
+            TypeError: if axis is neither 0 nor 1
 
         Returns:
             Tuple[np.ndarray, Optional[Sequence]]: a tuple of matrix and its labels
         """
+
+        check_axis(axis)
+
         result = None
         rgroups = None
         try:
@@ -107,14 +113,18 @@ class Mops:
         Args:
             funcs (List[Callable[[list], Any]]): functions to be called.
             group (list, optional): group variable. Defaults to None.
-            axis (int, optional): 0 for rows, 1 for columns. Defaults to 0.
+            axis (Union[int, bool], optional): 0 for rows, 1 for columns. Defaults to 0.
 
         Raises:
             Exception: ApplyFuncError, when a function cannot be applied
+            TypeError: if axis is neither 0 nor 1
 
         Returns:
             Tuple[np.ndarray, Optional[Sequence]]: a tuple of matrix and its labels
         """
+        
+        check_axis(axis)
+
         result = None
         rgroups = None
         try:
