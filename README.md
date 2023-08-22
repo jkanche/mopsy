@@ -1,3 +1,7 @@
+[![Project generated with PyScaffold](https://img.shields.io/badge/-PyScaffold-005CA0?logo=pyscaffold)](https://pyscaffold.org/)
+[![PyPI-Server](https://img.shields.io/pypi/v/mopsy.svg)](https://pypi.org/project/mopsy/)
+![Unit tests](https://github.com/BiocPy/mopsy/actions/workflows/pypi-test.yml/badge.svg)
+
 # mopsy - Matrix Operations in Python
 
 Convenience library to perform row/column operations over numpy and scipy matrices. Provides an interface similar to base R matrix methods/MatrixStats methods in python.
