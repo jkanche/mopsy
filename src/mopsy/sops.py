@@ -1,11 +1,11 @@
+from statistics import mean
+from typing import Any, Callable, Iterator, Optional, Sequence, Tuple, Union
+
+import numpy as np
+from scipy import sparse as sp
+
 from .mops import Mops
 from .nops import Nops
-
-from scipy import sparse as sp
-import numpy as np
-from statistics import mean
-
-from typing import Callable, Any, Iterator, Tuple, Sequence, Optional, Union
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"
@@ -13,26 +13,33 @@ __license__ = "MIT"
 
 
 class Sops(Mops):
-    """Sops, Sparse Matrix Operation Class"""
+    """Sops, Sparse Matrix Operation Class."""
 
     def __init__(self, mat: sp.spmatrix, non_zero: bool = False) -> None:
         """Initialize the class from a scipy sparse matrix.
 
         Args:
-            mat (scipy.sparse.spmatrix): a scipy sparse matrix
-            non_zero (bool): filter zero values ?
+            mat:
+                Input scipy sparse matrix.
+
+            non_zero:
+                Whether to filter zero values.
+                Defaults to False.
         """
         super().__init__(mat, non_zero=non_zero)
 
     def iter(self, group: list = None, axis: Union[int, bool] = 0) -> Iterator[Tuple]:
-        """Iterator over groups and an axis
+        """Iterator over groups and an axis.
 
         Args:
-            group (list, optional): group variable. Defaults to None.
-            axis (Union[int, bool], optional): 0 for rows, 1 for columns. Defaults to 0.
+            group:
+                Group variable. Defaults to None.
+
+            axis:
+                0 for rows, 1 for columns. Defaults to 0.
 
         Yields:
-            tuple (str, matrix): of group and the submatrix
+            a tuple (str, matrix) of group and the submatrix.
         """
         mat = self.matrix.tocsr() if axis == 0 else self.matrix.tocsc()
         if group is None:
@@ -43,21 +50,17 @@ class Sops(Mops):
                 if axis == 0:
                     yield (
                         k,
-                        Sops(mat[v,], self.non_zero,),
+                        Sops(
+                            mat[v,],
+                            self.non_zero,
+                        ),
                     )
                 else:
                     yield (k, Sops(mat[:, v], self.non_zero))
 
-    def _apply(self, func: Callable[[list], Any], axis: Union[int, bool] = 0) -> np.ndarray:
-        """Apply a function over the matrix
-
-        Args:
-            func (Callable): function to apply over row or col wise vectors
-            axis (Union[int, bool], optional): 0 for rows, 1 for columns. Defaults to 0.
-
-        Returns:
-            numpy.ndarray: a dense vector
-        """
+    def _apply(
+        self, func: Callable[[list], Any], axis: Union[int, bool] = 0
+    ) -> np.ndarray:
         mat = self.matrix.tocsc() if axis == 0 else self.matrix.tocsr()
         if self.non_zero:
             # reduction along an axis
@@ -96,18 +99,26 @@ class Sops(Mops):
         group: Sequence = None,
         axis: Union[int, bool] = 0,
     ) -> Tuple[np.ndarray, Optional[Sequence]]:
-        """Apply a function to groups along an axis
+        """Apply a function to groups along an axis.
 
         Args:
-            func (Callable): a function to apply
-            group (list, optional): group variable. Defaults to None.
-            axis (Union[int, bool], optional): 0 for rows, 1 for columns. Defaults to 0.
+            func:
+                List of function to apply over the groups.
+
+            group:
+                Group vector, must be the same length as the number
+                of rows or columns depending on the axis.
+                Defaults to None.
+
+            axis:
+                0 for rows, 1 for columns.
 
         Raises:
-            Exception: ApplyFuncError, when a function cannot be applied
+            Exception:
+                ApplyFuncError, when a function cannot be applied.
 
         Returns:
-            Tuple[np.ndarray, Optional[Sequence]]: a tuple of matrix and its labels
+            A tuple of matrix and its labels.
         """
         original_sparse_type = Sops.identify_sparse_type(self.matrix)
         mat, groups = super().apply(func, group, axis)
@@ -122,46 +133,51 @@ class Sops(Mops):
         group: list = None,
         axis: Union[int, bool] = 0,
     ) -> Tuple[np.ndarray, Optional[Sequence]]:
-        """Apply multiple functions, the first axis
-        of the ndarray specifies the results of the inputs functions in
-        the same order
+        """Apply multiple functions, the first axis of the ndarray specifies the results of the inputs functions in the
+        same order.
 
         Args:
-            funcs (List[Callable[[list], Any]]): functions to be called.
-            group (list, optional): group variable. Defaults to None.
-            axis (Union[int, bool], optional): 0 for rows, 1 for columns. Defaults to 0.
+            func:
+                List of function to apply over the groups.
+
+            group:
+                Group vector, must be the same length as the number
+                of rows or columns depending on the axis.
+                Defaults to None.
+
+            axis:
+                0 for rows, 1 for columns.
 
         Raises:
-            Exception: ApplyFuncError, when a function cannot be applied
+            Exception:
+                ApplyFuncError, when a function cannot be applied.
 
         Returns:
-            Tuple[np.ndarray, Optional[Sequence]]: a tuple of matrix and its labels
+            A tuple of matrix and its labels.
         """
         original_sparse_type = Sops.identify_sparse_type(self.matrix)
         mats, groups = super().multi_apply(funcs, group, axis)
-        cmats = [
-            Sops.convert_sparse_type(m, original_sparse_type) for m in mats
-        ]
+        cmats = [Sops.convert_sparse_type(m, original_sparse_type) for m in mats]
 
         return cmats, groups
 
     @staticmethod
     def identify_sparse_type(mat: sp.spmatrix):
-        """Identify the sparse matrix format
+        """Identify the sparse matrix format.
 
         Args:
-            mat (scipy.sparse.spmatrix): a scipy matrix
+            mat:
+                Input scipy matrix.
 
         Raises:
-            TypeError: matrix is not sparse
+            TypeError:
+                If matrix is not sparse.
 
         Returns:
-            an internal matrix representation object
+            An internal matrix representation object
         """
         if not isinstance(mat, sp.spmatrix):
-            raise TypeError(
-                f"mat is not a sparse representation, it is {type(mat)}"
-            )
+            raise TypeError(f"mat is not a sparse representation, it is {type(mat)}")
 
         if sp.isspmatrix_csc(mat):
             return "csc"
@@ -180,17 +196,21 @@ class Sops(Mops):
 
     @staticmethod
     def convert_sparse_type(mat: sp.spmatrix, format: str):
-        """Convert to a sparse matrix format
+        """Convert to a sparse matrix format.
 
         Args:
-            mat (scipy.sparse.spmatrix): a numpy or scipy matrix
-            format (str): sparse matrix format, one of `identify_sparse_type()`
+            mat:
+                A numpy or scipy matrix.
+
+            format:
+                Sparse matrix format, one of `identify_sparse_type()`.
 
         Raises:
-            TypeError: matrix is not sparse
+            TypeError:
+                If matrix is not sparse.
 
         Returns:
-            an internal matrix representation object
+            An internal matrix representation object.
         """
         if isinstance(mat, np.ndarray):
             if format == "csc":
@@ -223,4 +243,4 @@ class Sops(Mops):
             elif format == "lil":
                 return mat.tolil()
         else:
-            raise Exception(f"unknown matrix format")
+            raise Exception("unknown matrix format.")

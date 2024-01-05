@@ -1,9 +1,10 @@
+from typing import Union
+
 import numpy as np
 import scipy.sparse as sp
+
 from .nops import Nops
 from .sops import Sops
-
-from typing import Union
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"
@@ -11,17 +12,21 @@ __license__ = "MIT"
 
 
 def get_matrix_type(mat: Union[np.ndarray, sp.spmatrix], non_zero: bool = False):
-    """Get an internal matrix state
+    """Get an internal matrix state.
 
     Args:
-        mat (Numpy.ndarray or scipy.sparse.spmatrix): a numpy or scipy matrix
-        non_zero (bool): filter zero values ?
+        mat:
+            An input numpy or scipy matrix.
+
+        non_zero:
+            Whether to filter zero value. Defaults to False.
 
     Raises:
-        Exception: TypeNotSupported, when the matrix type is not supported
+        Exception:
+            TypeNotSupported, when the matrix type is not supported.
 
     Returns:
-        an internal matrix representation object
+        An internal matrix representation object.
     """
     if isinstance(mat, np.ndarray):
         return Nops(mat, non_zero=non_zero)
