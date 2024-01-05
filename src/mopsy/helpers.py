@@ -1,5 +1,5 @@
 from statistics import mean, median
-from typing import Any, Callable, Sequence, Union
+from typing import Callable, Sequence, Union
 
 import numpy
 import scipy

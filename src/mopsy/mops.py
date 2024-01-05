@@ -11,7 +11,7 @@ __license__ = "MIT"
 
 
 class Mops:
-    """Base class for all matrix operations"""
+    """Base class for all matrix operations."""
 
     def __init__(self, mat, non_zero: bool = False) -> None:
         """Intialize the matrix.
@@ -108,9 +108,8 @@ class Mops:
         group: list = None,
         axis: int = 0,
     ) -> Tuple[np.ndarray, Optional[Sequence]]:
-        """Apply multiple functions, the first axis
-        of the ndarray specifies the results of the inputs functions in
-        the same order.
+        """Apply multiple functions, the first axis of the ndarray specifies the results of the inputs functions in the
+        same order.
 
         Args:
             func:
