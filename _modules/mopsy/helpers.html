@@ -1,14 +1,14 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
-    <!-- Generated with Sphinx 6.1.3 and Furo 2022.12.07 -->
-        <title>mopsy.helpers - mopsy 0.2.6 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+        <title>mopsy.helpers - mopsy 0.2.7 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
     
     
 
@@ -122,7 +122,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">mopsy 0.2.6 documentation</div></a>
+      <a href="../../index.html"><div class="brand">mopsy 0.2.7 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -145,7 +145,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
   
-  <span class="sidebar-brand-text">mopsy 0.2.6 documentation</span>
+  <span class="sidebar-brand-text">mopsy 0.2.7 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -160,7 +160,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../authors.html">Authors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../api/modules.html">Module Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../api/modules.html">Module Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Module Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../api/mopsy.html">mopsy package</a></li>
 </ul>
 </li>
@@ -199,144 +199,219 @@
         <article role="main">
           <h1>Source code for mopsy.helpers</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">statistics</span> <span class="kn">import</span> <span class="n">mean</span><span class="p">,</span> <span class="n">median</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">get_matrix_type</span>
-<span class="kn">from</span> <span class="nn">.checkutils</span> <span class="kn">import</span> <span class="n">check_axis</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Any</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">scipy</span>
+
+<span class="kn">from</span> <span class="nn">.checkutils</span> <span class="kn">import</span> <span class="n">check_axis</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">get_matrix_type</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;jkanche&quot;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s2">&quot;jkanche&quot;</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s2">&quot;MIT&quot;</span>
 
 
-<div class="viewcode-block" id="colsum"><a class="viewcode-back" href="../../api/mopsy.html#mopsy.helpers.colsum">[docs]</a><span class="k">def</span> <span class="nf">colsum</span><span class="p">(</span>
+<div class="viewcode-block" id="colsum">
+<a class="viewcode-back" href="../../api/mopsy.html#mopsy.helpers.colsum">[docs]</a>
+<span class="k">def</span> <span class="nf">colsum</span><span class="p">(</span>
     <span class="n">mat</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">],</span>
     <span class="n">group</span><span class="p">:</span> <span class="n">Sequence</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">non_zero</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply colsum</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply column sum.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix</span>
-<span class="sd">        group (Sequence, optional): group variable. Defaults to None.</span>
-<span class="sd">        non_zero (bool): filter zero values ?</span>
+<span class="sd">        mat:</span>
+<span class="sd">            Input matrix.</span>
+
+<span class="sd">        group:</span>
+<span class="sd">            Group vector, must be the same length as the number</span>
+<span class="sd">            of columns.</span>
+<span class="sd">            Defaults to None.</span>
+
+<span class="sd">        non_zero:</span>
+<span class="sd">            Whether to filter zero values.</span>
+<span class="sd">            Defaults to False.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        numpy.ndarray: matrix</span>
+<span class="sd">        A matrix with the column sums.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">apply</span><span class="p">(</span><span class="nb">sum</span><span class="p">,</span> <span class="n">mat</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">non_zero</span><span class="o">=</span><span class="n">non_zero</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="rowsum"><a class="viewcode-back" href="../../api/mopsy.html#mopsy.helpers.rowsum">[docs]</a><span class="k">def</span> <span class="nf">rowsum</span><span class="p">(</span>
+
+<div class="viewcode-block" id="rowsum">
+<a class="viewcode-back" href="../../api/mopsy.html#mopsy.helpers.rowsum">[docs]</a>
+<span class="k">def</span> <span class="nf">rowsum</span><span class="p">(</span>
     <span class="n">mat</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">],</span>
     <span class="n">group</span><span class="p">:</span> <span class="n">Sequence</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">non_zero</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply rowsum</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply row sum.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix</span>
-<span class="sd">        group (Sequence, optional): group variable. Defaults to None.</span>
-<span class="sd">        non_zero (bool): filter zero values ?</span>
+<span class="sd">        mat:</span>
+<span class="sd">            Input matrix.</span>
+
+<span class="sd">        group:</span>
+<span class="sd">             Group vector, must be the same length as the number</span>
+<span class="sd">            of rows. Defaults to None.</span>
+
+<span class="sd">        non_zero:</span>
+<span class="sd">            Whether to filter zero values.</span>
+<span class="sd">            Defaults to False.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        numpy.ndarray: matrix</span>
+<span class="sd">        A matrix with the row sums.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">apply</span><span class="p">(</span><span class="nb">sum</span><span class="p">,</span> <span class="n">mat</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">non_zero</span><span class="o">=</span><span class="n">non_zero</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="colmean"><a class="viewcode-back" href="../../api/mopsy.html#mopsy.helpers.colmean">[docs]</a><span class="k">def</span> <span class="nf">colmean</span><span class="p">(</span>
+
+<div class="viewcode-block" id="colmean">
+<a class="viewcode-back" href="../../api/mopsy.html#mopsy.helpers.colmean">[docs]</a>
+<span class="k">def</span> <span class="nf">colmean</span><span class="p">(</span>
     <span class="n">mat</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">],</span>
     <span class="n">group</span><span class="p">:</span> <span class="n">Sequence</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">non_zero</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply colmean</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply column mean.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix</span>
-<span class="sd">        group (Sequence, optional): group variable. Defaults to None.</span>
-<span class="sd">        non_zero (bool): filter zero values ?</span>
+<span class="sd">        mat:</span>
+<span class="sd">            Input matrix.</span>
+
+<span class="sd">        group:</span>
+<span class="sd">            Group vector, must be the same length as the number</span>
+<span class="sd">            of columns. Defaults to None.</span>
+
+<span class="sd">        non_zero:</span>
+<span class="sd">            Whether to filter zero values.</span>
+<span class="sd">            Defaults to False.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        numpy.ndarray: matrix</span>
+<span class="sd">        A matrix with the column means.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">apply</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">mat</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">non_zero</span><span class="o">=</span><span class="n">non_zero</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="rowmean"><a class="viewcode-back" href="../../api/mopsy.html#mopsy.helpers.rowmean">[docs]</a><span class="k">def</span> <span class="nf">rowmean</span><span class="p">(</span>
+
+<div class="viewcode-block" id="rowmean">
+<a class="viewcode-back" href="../../api/mopsy.html#mopsy.helpers.rowmean">[docs]</a>
+<span class="k">def</span> <span class="nf">rowmean</span><span class="p">(</span>
     <span class="n">mat</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">],</span>
     <span class="n">group</span><span class="p">:</span> <span class="n">Sequence</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">non_zero</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply rowmean</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply row mean.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix</span>
-<span class="sd">        group (Sequence, optional): group variable. Defaults to None.</span>
-<span class="sd">        non_zero (bool): filter zero values ?</span>
+<span class="sd">        mat:</span>
+<span class="sd">            Input matrix.</span>
+
+<span class="sd">        group:</span>
+<span class="sd">            Group vector, must be the same length as the number</span>
+<span class="sd">            of rows. Defaults to None.</span>
+
+<span class="sd">        non_zero:</span>
+<span class="sd">            Whether to filter zero values.</span>
+<span class="sd">            Defaults to False.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        numpy.ndarray: matrix</span>
+<span class="sd">        A matrix with the row means.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">apply</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">mat</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">non_zero</span><span class="o">=</span><span class="n">non_zero</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="colmedian"><a class="viewcode-back" href="../../api/mopsy.html#mopsy.helpers.colmedian">[docs]</a><span class="k">def</span> <span class="nf">colmedian</span><span class="p">(</span>
+
+<div class="viewcode-block" id="colmedian">
+<a class="viewcode-back" href="../../api/mopsy.html#mopsy.helpers.colmedian">[docs]</a>
+<span class="k">def</span> <span class="nf">colmedian</span><span class="p">(</span>
     <span class="n">mat</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">],</span>
     <span class="n">group</span><span class="p">:</span> <span class="n">Sequence</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">non_zero</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply colmedian</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply column median.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix</span>
-<span class="sd">        group (Sequence, optional): group variable. Defaults to None.</span>
-<span class="sd">        non_zero (bool): filter zero values ?</span>
+<span class="sd">        mat:</span>
+<span class="sd">            Input matrix.</span>
+
+<span class="sd">        group:</span>
+<span class="sd">            Group vector, must be the same length as the number</span>
+<span class="sd">            of columns. Defaults to None.</span>
+
+<span class="sd">        non_zero:</span>
+<span class="sd">            Whether to filter zero values.</span>
+<span class="sd">            Defaults to False.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        numpy.ndarray: matrix</span>
+<span class="sd">        A matrix with the column medians.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">apply</span><span class="p">(</span><span class="n">median</span><span class="p">,</span> <span class="n">mat</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">non_zero</span><span class="o">=</span><span class="n">non_zero</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="rowmedian"><a class="viewcode-back" href="../../api/mopsy.html#mopsy.helpers.rowmedian">[docs]</a><span class="k">def</span> <span class="nf">rowmedian</span><span class="p">(</span>
+
+<div class="viewcode-block" id="rowmedian">
+<a class="viewcode-back" href="../../api/mopsy.html#mopsy.helpers.rowmedian">[docs]</a>
+<span class="k">def</span> <span class="nf">rowmedian</span><span class="p">(</span>
     <span class="n">mat</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">],</span>
     <span class="n">group</span><span class="p">:</span> <span class="n">Sequence</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">non_zero</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply rowmedian</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply row median.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix</span>
-<span class="sd">        group (Sequence, optional): group variable. Defaults to None.</span>
-<span class="sd">        non_zero (bool): filter zero values ?</span>
+<span class="sd">        mat:</span>
+<span class="sd">            Input matrix.</span>
+
+<span class="sd">        group:</span>
+<span class="sd">            Group vector, must be the same length as the number</span>
+<span class="sd">            of rows. Defaults to None.</span>
+
+<span class="sd">        non_zero:</span>
+<span class="sd">            Whether to filter zero values.</span>
+<span class="sd">            Defaults to False.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        numpy.ndarray: matrix</span>
+<span class="sd">        A matrix with the row medians.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">apply</span><span class="p">(</span><span class="n">median</span><span class="p">,</span> <span class="n">mat</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">non_zero</span><span class="o">=</span><span class="n">non_zero</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="apply"><a class="viewcode-back" href="../../api/mopsy.html#mopsy.helpers.apply">[docs]</a><span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
-    <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">list</span><span class="p">],</span> <span class="n">Any</span><span class="p">],</span>
+
+<div class="viewcode-block" id="apply">
+<a class="viewcode-back" href="../../api/mopsy.html#mopsy.helpers.apply">[docs]</a>
+<span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+    <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
     <span class="n">mat</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">],</span>
     <span class="n">axis</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">],</span>
     <span class="n">group</span><span class="p">:</span> <span class="n">Sequence</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">non_zero</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A generic apply function</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A generic `apply` function.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        func (Callable): function to be called.</span>
-<span class="sd">        mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix</span>
-<span class="sd">        group (Sequence, optional): group variable. Defaults to None.</span>
-<span class="sd">        axis (Union[int, bool]): 0 for rows, 1 for columns.</span>
-<span class="sd">        non_zero (bool): filter zero values ?</span>
+<span class="sd">        func:</span>
+<span class="sd">            Function to apply over the groups.</span>
+
+<span class="sd">        mat:</span>
+<span class="sd">            Input matrix.</span>
+
+<span class="sd">        group:</span>
+<span class="sd">            Group vector, must be the same length as the number</span>
+<span class="sd">            of rows or columns depending on the axis.</span>
+<span class="sd">            Defaults to None.</span>
+
+<span class="sd">        axis:</span>
+<span class="sd">            0 for rows, 1 for columns.</span>
+
+<span class="sd">        non_zero:</span>
+<span class="sd">            Whether to filter zero values. Defaults to False.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        numpy.ndarray: matrix</span>
+<span class="sd">        A matrix containing the result of the function.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">check_axis</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span>
 
@@ -344,31 +419,45 @@
     <span class="k">return</span> <span class="n">tmat</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="multi_apply"><a class="viewcode-back" href="../../api/mopsy.html#mopsy.helpers.multi_apply">[docs]</a><span class="k">def</span> <span class="nf">multi_apply</span><span class="p">(</span>
-    <span class="n">funcs</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">list</span><span class="p">],</span> <span class="n">Any</span><span class="p">]],</span>
+
+<div class="viewcode-block" id="multi_apply">
+<a class="viewcode-back" href="../../api/mopsy.html#mopsy.helpers.multi_apply">[docs]</a>
+<span class="k">def</span> <span class="nf">multi_apply</span><span class="p">(</span>
+    <span class="n">funcs</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Callable</span><span class="p">],</span>
     <span class="n">mat</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">],</span>
     <span class="n">axis</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">],</span>
     <span class="n">group</span><span class="p">:</span> <span class="n">Sequence</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">non_zero</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply multiple functions, the first axis</span>
-<span class="sd">        of the ndarray specifies the results of the inputs functions in</span>
-<span class="sd">        the same order</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A generic `multi_apply` to apply multiple function over the subset matrices.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        funcs (Sequence[Callable[[list], Any]]): functions to be called.</span>
-<span class="sd">        mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix</span>
-<span class="sd">        group (Sequence, optional): group variable. Defaults to None.</span>
-<span class="sd">        axis (Union[int, bool]): 0 for rows, 1 for columns.</span>
-<span class="sd">        non_zero (bool): filter zero values ?</span>
+<span class="sd">        func:</span>
+<span class="sd">            List of function to apply over the groups.</span>
+
+<span class="sd">        mat:</span>
+<span class="sd">            Input matrix.</span>
+
+<span class="sd">        group:</span>
+<span class="sd">            Group vector, must be the same length as the number</span>
+<span class="sd">            of rows or columns depending on the axis.</span>
+<span class="sd">            Defaults to None.</span>
+
+<span class="sd">        axis:</span>
+<span class="sd">            0 for rows, 1 for columns.</span>
+
+<span class="sd">        non_zero:</span>
+<span class="sd">            Whether to filter zero values. Defaults to False.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        numpy.ndarray: matrix</span>
+<span class="sd">        A list of matrices, in the same order as the functions</span>
+<span class="sd">        containing the result of each the function.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">check_axis</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span>
 
     <span class="n">tmat</span> <span class="o">=</span> <span class="n">get_matrix_type</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">non_zero</span><span class="o">=</span><span class="n">non_zero</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">tmat</span><span class="o">.</span><span class="n">multi_apply</span><span class="p">(</span><span class="n">funcs</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span></div>
+
 </pre></div>
         </article>
       </div>
@@ -401,9 +490,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
-    <script src="../../_static/scripts/furo.js"></script>
+</div><script src="../../_static/documentation_options.js?v=58050c01"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

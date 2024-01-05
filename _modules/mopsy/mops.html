@@ -1,14 +1,14 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
-    <!-- Generated with Sphinx 6.1.3 and Furo 2022.12.07 -->
-        <title>mopsy.mops - mopsy 0.2.6 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+        <title>mopsy.mops - mopsy 0.2.7 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
     
     
 
@@ -122,7 +122,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">mopsy 0.2.6 documentation</div></a>
+      <a href="../../index.html"><div class="brand">mopsy 0.2.7 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -145,7 +145,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
   
-  <span class="sidebar-brand-text">mopsy 0.2.6 documentation</span>
+  <span class="sidebar-brand-text">mopsy 0.2.7 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -160,7 +160,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../authors.html">Authors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../api/modules.html">Module Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../api/modules.html">Module Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Module Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../api/mopsy.html">mopsy package</a></li>
 </ul>
 </li>
@@ -199,8 +199,9 @@
         <article role="main">
           <h1>Source code for mopsy.mops</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">groupby</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">from</span> <span class="nn">.checkutils</span> <span class="kn">import</span> <span class="n">check_axis</span>
 
@@ -209,27 +210,38 @@
 <span class="n">__license__</span> <span class="o">=</span> <span class="s2">&quot;MIT&quot;</span>
 
 
-<div class="viewcode-block" id="Mops"><a class="viewcode-back" href="../../api/mopsy.html#mopsy.mops.Mops">[docs]</a><span class="k">class</span> <span class="nc">Mops</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for all matrix operations&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Mops">
+<a class="viewcode-back" href="../../api/mopsy.html#mopsy.mops.Mops">[docs]</a>
+<span class="k">class</span> <span class="nc">Mops</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for all matrix operations.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mat</span><span class="p">,</span> <span class="n">non_zero</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Intialize the matrix</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Intialize the matrix.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            mat (numpy.ndarray or scipy.sparse.spmatrix): a matrix</span>
-<span class="sd">            non_zero (bool): filter zero values ?</span>
+<span class="sd">            mat:</span>
+<span class="sd">                Input matrix.</span>
+
+<span class="sd">            non_zero:</span>
+<span class="sd">                Whether to filter zero values.</span>
+<span class="sd">                Defaults to False.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">matrix</span> <span class="o">=</span> <span class="n">mat</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">non_zero</span> <span class="o">=</span> <span class="n">non_zero</span>
 
-<div class="viewcode-block" id="Mops.groupby_indices"><a class="viewcode-back" href="../../api/mopsy.html#mopsy.mops.Mops.groupby_indices">[docs]</a>    <span class="k">def</span> <span class="nf">groupby_indices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;From a group vector, get the list of indices that map to each group</span>
+<div class="viewcode-block" id="Mops.groupby_indices">
+<a class="viewcode-back" href="../../api/mopsy.html#mopsy.mops.Mops.groupby_indices">[docs]</a>
+    <span class="k">def</span> <span class="nf">groupby_indices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;From a group vector, get the list of indices that map to each group.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            group (list): group variable, any list or array like object</span>
+<span class="sd">            group:</span>
+<span class="sd">                Group vector, expected to ne the same as the</span>
+<span class="sd">                number of rows or column.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            dict: each group and the list of indices that map to it</span>
+<span class="sd">            A dictionary with each group name as the key and the values containing</span>
+<span class="sd">            the list of indices that map to it.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">{</span>
             <span class="n">k</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">v</span><span class="p">]</span>
@@ -238,16 +250,8 @@
             <span class="p">)</span>
         <span class="p">}</span></div>
 
+
     <span class="k">def</span> <span class="nf">_apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">list</span><span class="p">],</span> <span class="n">Any</span><span class="p">],</span> <span class="n">axis</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Internal function that wraps numpy&#39;s apply_along_axis</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            func (Callable): a function to apply</span>
-<span class="sd">            axis (Union[int, bool]): 0 for rows, 1 for columns</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            numpy.ndarray: a dense vector after appling group by</span>
-<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">non_zero</span><span class="p">:</span>
 
             <span class="k">def</span> <span class="nf">funcwrapper</span><span class="p">(</span><span class="n">mat</span><span class="p">):</span>
@@ -258,25 +262,30 @@
 
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">apply_along_axis</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">matrix</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Mops.apply"><a class="viewcode-back" href="../../api/mopsy.html#mopsy.mops.Mops.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+<div class="viewcode-block" id="Mops.apply">
+<a class="viewcode-back" href="../../api/mopsy.html#mopsy.mops.Mops.apply">[docs]</a>
+    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">list</span><span class="p">],</span> <span class="n">Any</span><span class="p">],</span>
         <span class="n">group</span><span class="p">:</span> <span class="n">Sequence</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">axis</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply a function to groups along an axis</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply a function to groups along an axis.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            func (Callable): a function to apply</span>
-<span class="sd">            group (list, optional): group variable. Defaults to None.</span>
-<span class="sd">            axis (Union[int, bool], optional): 0 for rows, 1 for columns. Defaults to 0.</span>
+<span class="sd">            func:</span>
+<span class="sd">                List of function to apply over the groups.</span>
 
-<span class="sd">        Raises:</span>
-<span class="sd">            Exception: ApplyFuncError, when a function cannot be applied</span>
-<span class="sd">            TypeError: if axis is neither 0 nor 1</span>
+<span class="sd">            group:</span>
+<span class="sd">                Group vector, must be the same length as the number</span>
+<span class="sd">                of rows or columns depending on the axis.</span>
+<span class="sd">                Defaults to None.</span>
+
+<span class="sd">            axis:</span>
+<span class="sd">                0 for rows, 1 for columns.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Tuple[np.ndarray, Optional[Sequence]]: a tuple of matrix and its labels</span>
+<span class="sd">            A tuple of matrix and its labels.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">check_axis</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span>
@@ -300,41 +309,42 @@
 
         <span class="k">return</span> <span class="n">result</span><span class="p">,</span> <span class="n">rgroups</span></div>
 
-<div class="viewcode-block" id="Mops.multi_apply"><a class="viewcode-back" href="../../api/mopsy.html#mopsy.mops.Mops.multi_apply">[docs]</a>    <span class="k">def</span> <span class="nf">multi_apply</span><span class="p">(</span>
+
+<div class="viewcode-block" id="Mops.multi_apply">
+<a class="viewcode-back" href="../../api/mopsy.html#mopsy.mops.Mops.multi_apply">[docs]</a>
+    <span class="k">def</span> <span class="nf">multi_apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">funcs</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">list</span><span class="p">],</span> <span class="n">Any</span><span class="p">]],</span>
         <span class="n">group</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply multiple functions, the first axis</span>
-<span class="sd">        of the ndarray specifies the results of the inputs functions in</span>
-<span class="sd">        the same order</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply multiple functions, the first axis of the ndarray specifies the results of the inputs functions in the</span>
+<span class="sd">        same order.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            funcs (List[Callable[[list], Any]]): functions to be called.</span>
-<span class="sd">            group (list, optional): group variable. Defaults to None.</span>
-<span class="sd">            axis (Union[int, bool], optional): 0 for rows, 1 for columns. Defaults to 0.</span>
+<span class="sd">            func:</span>
+<span class="sd">                List of function to apply over the groups.</span>
 
-<span class="sd">        Raises:</span>
-<span class="sd">            Exception: ApplyFuncError, when a function cannot be applied</span>
-<span class="sd">            TypeError: if axis is neither 0 nor 1</span>
+<span class="sd">            group:</span>
+<span class="sd">                Group vector, must be the same length as the number</span>
+<span class="sd">                of rows or columns depending on the axis.</span>
+<span class="sd">                Defaults to None.</span>
+
+<span class="sd">            axis:</span>
+<span class="sd">                0 for rows, 1 for columns.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Tuple[np.ndarray, Optional[Sequence]]: a tuple of matrix and its labels</span>
+<span class="sd">            A tuple of matrix and its labels.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        
+
         <span class="n">check_axis</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span>
 
         <span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">rgroups</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">group</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-
                 <span class="n">tmats</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_apply</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">funcs</span><span class="p">]</span>
-                <span class="n">nmats</span> <span class="o">=</span> <span class="p">[</span>
-                    <span class="n">x</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="k">if</span> <span class="n">axis</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">x</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>
-                    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">tmats</span>
-                <span class="p">]</span>
+                <span class="n">nmats</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="k">if</span> <span class="n">axis</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">x</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">.</span><span class="n">T</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">tmats</span><span class="p">]</span>
                 <span class="n">result</span> <span class="o">=</span> <span class="n">nmats</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">rgroups</span> <span class="o">=</span> <span class="p">[]</span>
@@ -352,7 +362,9 @@
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: applying function: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">result</span><span class="p">,</span> <span class="n">rgroups</span></div></div>
+        <span class="k">return</span> <span class="n">result</span><span class="p">,</span> <span class="n">rgroups</span></div>
+</div>
+
 </pre></div>
         </article>
       </div>
@@ -385,9 +397,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
-    <script src="../../_static/scripts/furo.js"></script>
+</div><script src="../../_static/documentation_options.js?v=58050c01"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

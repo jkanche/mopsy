@@ -1,15 +1,15 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="./">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="License" href="license.html" /><link rel="prev" title="Tutorial" href="tutorial.html" />
 
-    <!-- Generated with Sphinx 6.1.3 and Furo 2022.12.07 -->
-        <title>mopsy - Matrix Operations in Python - mopsy 0.2.6 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+        <title>mopsy - Matrix Operations in Python - mopsy 0.2.7 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
     
     
 
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">mopsy 0.2.6 documentation</div></a>
+      <a href="index.html"><div class="brand">mopsy 0.2.7 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">mopsy 0.2.6 documentation</span>
+  <span class="sidebar-brand-text">mopsy 0.2.7 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -161,7 +161,7 @@
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="api/modules.html">Module Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="api/modules.html">Module Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Module Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="api/mopsy.html">mopsy package</a></li>
 </ul>
 </li>
@@ -199,18 +199,21 @@
           </label>
         </div>
         <article role="main">
-          <section id="mopsy-matrix-operations-in-python">
-<h1>mopsy - Matrix Operations in Python<a class="headerlink" href="#mopsy-matrix-operations-in-python" title="Permalink to this heading">#</a></h1>
+          <p><a class="reference external" href="https://pyscaffold.org/"><img alt="Project generated with PyScaffold" src="https://img.shields.io/badge/-PyScaffold-005CA0?logo=pyscaffold" /></a>
+<a class="reference external" href="https://pypi.org/project/mopsy/"><img alt="PyPI-Server" src="https://img.shields.io/pypi/v/mopsy.svg" /></a>
+<img alt="Unit tests" src="https://github.com/BiocPy/mopsy/actions/workflows/pypi-test.yml/badge.svg" /></p>
+<section id="mopsy-matrix-operations-in-python">
+<h1>mopsy - Matrix Operations in Python<a class="headerlink" href="#mopsy-matrix-operations-in-python" title="Link to this heading">#</a></h1>
 <p>Convenience library to perform row/column operations over numpy and scipy matrices. Provides an interface similar to base R matrix methods/MatrixStats methods in python.</p>
 <section id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">#</a></h2>
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h2>
 <p>Install from <a class="reference external" href="https://pypi.org/project/mopsy/">pypi</a></p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>mopsy
 </pre></div>
 </div>
 </section>
 <section id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading">#</a></h2>
+<h2>Usage<a class="headerlink" href="#usage" title="Link to this heading">#</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mopsy</span> <span class="kn">import</span> <span class="n">colsum</span>
 <span class="kn">import</span> <span class="nn">random</span> <span class="kn">from</span> <span class="nn">rd</span>
 <span class="c1"># generate a random sparse array with some density</span>
@@ -228,7 +231,7 @@
 <p>Methods are available to perform <code class="docutils literal notranslate"><span class="pre">sum</span></code>, <code class="docutils literal notranslate"><span class="pre">median</span></code>, <code class="docutils literal notranslate"><span class="pre">mean</span></code> along any axis. a generic <code class="docutils literal notranslate"><span class="pre">apply</span></code> method is also available for perform row-wise or column-wise operations.</p>
 <!-- pyscaffold-notes --></section>
 <section id="note">
-<h2>Note<a class="headerlink" href="#note" title="Permalink to this heading">#</a></h2>
+<h2>Note<a class="headerlink" href="#note" title="Link to this heading">#</a></h2>
 <p>This project has been set up using PyScaffold 4.1.1. For details and usage
 information on PyScaffold see https://pyscaffold.org/.</p>
 </section>
@@ -304,9 +307,9 @@ information on PyScaffold see https://pyscaffold.org/.</p>
       
     </aside>
   </div>
-</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/scripts/furo.js"></script>
+</div><script src="_static/documentation_options.js?v=58050c01"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>
