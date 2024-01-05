@@ -11,10 +11,12 @@ def check_axis(axis: Union[int, bool]):
     """Check if axis has a correct value
 
     Args:
-        axis (Union[int, bool]): axis, 0 for rows, 1 for columns
+        axis:
+            Axis, 0 for rows, 1 for columns
 
     Raises:
-        TypeError: if axis is neither 0 nor 1
+        ValueError:
+            If axis is neither 0 nor 1
     """
     if not (axis == 0 or axis == 1):
-        raise TypeError(f"axis is neither 0 or 1, provided {axis}")
+        raise ValueError(f"'axis' is neither 0 or 1, provided {axis}.")

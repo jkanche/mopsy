@@ -1,10 +1,11 @@
 from statistics import mean, median
-from .utils import get_matrix_type
-from .checkutils import check_axis
+from typing import Any, Callable, Sequence, Union
 
-from typing import Sequence, Union, Callable, Any
 import numpy
 import scipy
+
+from .checkutils import check_axis
+from .utils import get_matrix_type
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"
@@ -16,15 +17,23 @@ def colsum(
     group: Sequence = None,
     non_zero: bool = False,
 ) -> numpy.ndarray:
-    """Apply colsum
+    """Apply column sum.
 
     Args:
-        mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix
-        group (Sequence, optional): group variable. Defaults to None.
-        non_zero (bool): filter zero values ?
+        mat:
+            Input matrix.
+
+        group:
+            Group vector, must be the same length as the number
+            of columns.
+            Defaults to None.
+
+        non_zero:
+            Whether to filter zero values.
+            Defaults to False.
 
     Returns:
-        numpy.ndarray: matrix
+        A matrix with the column sums.
     """
     return apply(sum, mat, group=group, axis=1, non_zero=non_zero)
 
@@ -34,15 +43,22 @@ def rowsum(
     group: Sequence = None,
     non_zero: bool = False,
 ) -> numpy.ndarray:
-    """Apply rowsum
+    """Apply row sum.
 
     Args:
-        mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix
-        group (Sequence, optional): group variable. Defaults to None.
-        non_zero (bool): filter zero values ?
+        mat:
+            Input matrix.
+
+        group:
+             Group vector, must be the same length as the number
+            of rows. Defaults to None.
+
+        non_zero:
+            Whether to filter zero values.
+            Defaults to False.
 
     Returns:
-        numpy.ndarray: matrix
+        A matrix with the row sums.
     """
     return apply(sum, mat, group=group, axis=0, non_zero=non_zero)
 
@@ -52,15 +68,22 @@ def colmean(
     group: Sequence = None,
     non_zero: bool = False,
 ) -> numpy.ndarray:
-    """Apply colmean
+    """Apply column mean.
 
     Args:
-        mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix
-        group (Sequence, optional): group variable. Defaults to None.
-        non_zero (bool): filter zero values ?
+        mat:
+            Input matrix.
+
+        group:
+            Group vector, must be the same length as the number
+            of columns. Defaults to None.
+
+        non_zero:
+            Whether to filter zero values.
+            Defaults to False.
 
     Returns:
-        numpy.ndarray: matrix
+        A matrix with the column means.
     """
     return apply(mean, mat, group=group, axis=1, non_zero=non_zero)
 
@@ -70,15 +93,22 @@ def rowmean(
     group: Sequence = None,
     non_zero: bool = False,
 ) -> numpy.ndarray:
-    """Apply rowmean
+    """Apply row mean.
 
     Args:
-        mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix
-        group (Sequence, optional): group variable. Defaults to None.
-        non_zero (bool): filter zero values ?
+        mat:
+            Input matrix.
+
+        group:
+            Group vector, must be the same length as the number
+            of rows. Defaults to None.
+
+        non_zero:
+            Whether to filter zero values.
+            Defaults to False.
 
     Returns:
-        numpy.ndarray: matrix
+        A matrix with the row means.
     """
     return apply(mean, mat, group=group, axis=0, non_zero=non_zero)
 
@@ -88,15 +118,22 @@ def colmedian(
     group: Sequence = None,
     non_zero: bool = False,
 ) -> numpy.ndarray:
-    """Apply colmedian
+    """Apply column median.
 
     Args:
-        mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix
-        group (Sequence, optional): group variable. Defaults to None.
-        non_zero (bool): filter zero values ?
+        mat:
+            Input matrix.
+
+        group:
+            Group vector, must be the same length as the number
+            of columns. Defaults to None.
+
+        non_zero:
+            Whether to filter zero values.
+            Defaults to False.
 
     Returns:
-        numpy.ndarray: matrix
+        A matrix with the column medians.
     """
     return apply(median, mat, group=group, axis=1, non_zero=non_zero)
 
@@ -106,37 +143,55 @@ def rowmedian(
     group: Sequence = None,
     non_zero: bool = False,
 ) -> numpy.ndarray:
-    """Apply rowmedian
+    """Apply row median.
 
     Args:
-        mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix
-        group (Sequence, optional): group variable. Defaults to None.
-        non_zero (bool): filter zero values ?
+        mat:
+            Input matrix.
+
+        group:
+            Group vector, must be the same length as the number
+            of rows. Defaults to None.
+
+        non_zero:
+            Whether to filter zero values.
+            Defaults to False.
 
     Returns:
-        numpy.ndarray: matrix
+        A matrix with the row medians.
     """
     return apply(median, mat, group=group, axis=0, non_zero=non_zero)
 
 
 def apply(
-    func: Callable[[list], Any],
+    func: Callable,
     mat: Union[numpy.ndarray, scipy.sparse.spmatrix],
     axis: Union[int, bool],
     group: Sequence = None,
     non_zero: bool = False,
 ):
-    """A generic apply function
+    """A generic `apply` function.
 
     Args:
-        func (Callable): function to be called.
-        mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix
-        group (Sequence, optional): group variable. Defaults to None.
-        axis (Union[int, bool]): 0 for rows, 1 for columns.
-        non_zero (bool): filter zero values ?
+        func:
+            Function to apply over the groups.
+
+        mat:
+            Input matrix.
+
+        group:
+            Group vector, must be the same length as the number
+            of rows or columns depending on the axis.
+            Defaults to None.
+
+        axis:
+            0 for rows, 1 for columns.
+
+        non_zero:
+            Whether to filter zero values. Defaults to False.
 
     Returns:
-        numpy.ndarray: matrix
+        A matrix containing the result of the function.
     """
     check_axis(axis)
 
@@ -145,25 +200,35 @@ def apply(
 
 
 def multi_apply(
-    funcs: Sequence[Callable[[list], Any]],
+    funcs: Sequence[Callable],
     mat: Union[numpy.ndarray, scipy.sparse.spmatrix],
     axis: Union[int, bool],
     group: Sequence = None,
     non_zero: bool = False,
 ):
-    """Apply multiple functions, the first axis
-        of the ndarray specifies the results of the inputs functions in
-        the same order
+    """A generic `multi_apply` to apply multiple function over the subset matrices.
 
     Args:
-        funcs (Sequence[Callable[[list], Any]]): functions to be called.
-        mat (Union[numpy.ndarray, scipy.sparse.spmatrix]): matrix
-        group (Sequence, optional): group variable. Defaults to None.
-        axis (Union[int, bool]): 0 for rows, 1 for columns.
-        non_zero (bool): filter zero values ?
+        func:
+            List of function to apply over the groups.
+
+        mat:
+            Input matrix.
+
+        group:
+            Group vector, must be the same length as the number
+            of rows or columns depending on the axis.
+            Defaults to None.
+
+        axis:
+            0 for rows, 1 for columns.
+
+        non_zero:
+            Whether to filter zero values. Defaults to False.
 
     Returns:
-        numpy.ndarray: matrix
+        A list of matrices, in the same order as the functions
+        containing the result of each the function.
     """
     check_axis(axis)
 
