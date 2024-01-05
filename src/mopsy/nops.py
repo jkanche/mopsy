@@ -10,7 +10,7 @@ __license__ = "MIT"
 
 
 class Nops(Mops):
-    """Internal representation for numpy arrays"""
+    """Internal representation for numpy arrays."""
 
     def __init__(self, mat: np.ndarray, non_zero: bool = False) -> None:
         super().__init__(mat, non_zero=non_zero)
@@ -23,7 +23,7 @@ class Nops(Mops):
         Args:
             group:
                 Group variable. Defaults to None.
-            
+
             axis:
                 0 for rows, 1 for columns. Defaults to 0.
 

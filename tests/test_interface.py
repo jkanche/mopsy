@@ -19,4 +19,3 @@ def test_apply_cols():
 def test_multiapply_cols():
     rmat = multi_apply([mean], mat, 1, None, False)
     assert rmat is not None
-

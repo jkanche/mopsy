@@ -133,9 +133,8 @@ class Sops(Mops):
         group: list = None,
         axis: Union[int, bool] = 0,
     ) -> Tuple[np.ndarray, Optional[Sequence]]:
-        """Apply multiple functions, the first axis
-        of the ndarray specifies the results of the inputs functions in
-        the same order.
+        """Apply multiple functions, the first axis of the ndarray specifies the results of the inputs functions in the
+        same order.
 
         Args:
             func:

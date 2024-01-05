@@ -50,7 +50,7 @@ apply(nz_func, mat, axis=1)
 
 ## Multiple functions
 
-`mopsy` also supports applying multiple functions at the same time. 
+`mopsy` also supports applying multiple functions at the same time.
 
 ```python
 from mopsy import multi_apply
@@ -73,4 +73,4 @@ tmat_wrow = append_row(mat, np.array([0, 0, 0, 0, 0]))
 tmat_wcol = append_col(mat, np.array([[0], [0], [0], [0], [0]]))
 ```
 
-That's all for today! 
+That's all for today!

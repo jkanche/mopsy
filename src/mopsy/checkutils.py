@@ -8,7 +8,7 @@ __license__ = "MIT"
 
 
 def check_axis(axis: Union[int, bool]):
-    """Check if axis has a correct value
+    """Check if axis has a correct value.
 
     Args:
         axis:

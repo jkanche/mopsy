@@ -12,7 +12,7 @@ __license__ = "MIT"
 
 
 def get_matrix_type(mat: Union[np.ndarray, sp.spmatrix], non_zero: bool = False):
-    """Get an internal matrix state
+    """Get an internal matrix state.
 
     Args:
         mat:
