@@ -1,8 +1,16 @@
 # Changelog
 
+## Version 0.2.8
 
-## Version 0.2.0
+- Set dependency for `scipy`. Seems like the hstack and vstack functions
+have been updated in 1.13.0+.
+
+
+## Version 0.2.0 - 0.2.7
+
 - Support multi apply
+- Add tests and documentation
+- Sync package with the rest of the BiocPy
 
 ## Version 0.1 (development)
 
