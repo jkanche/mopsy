@@ -2,7 +2,7 @@
 
 ## Version 0.2.8
 
-- Set dependency for `scipy`. Seems like the hstack and vstack functions 
+- Set dependency for `scipy`. Seems like the hstack and vstack functions
 have been updated in 1.13.0+.
 
 
