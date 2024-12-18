@@ -58,9 +58,7 @@ class Sops(Mops):
                 else:
                     yield (k, Sops(mat[:, v], self.non_zero))
 
-    def _apply(
-        self, func: Callable[[list], Any], axis: Union[int, bool] = 0
-    ) -> np.ndarray:
+    def _apply(self, func: Callable[[list], Any], axis: Union[int, bool] = 0) -> np.ndarray:
         mat = self.matrix.tocsc() if axis == 0 else self.matrix.tocsr()
         if self.non_zero:
             # reduction along an axis

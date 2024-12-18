@@ -39,12 +39,7 @@ class Mops:
             A dictionary with each group name as the key and the values containing
             the list of indices that map to it.
         """
-        return {
-            k: [x[0] for x in v]
-            for k, v in groupby(
-                sorted(enumerate(group), key=lambda x: x[1]), lambda x: x[1]
-            )
-        }
+        return {k: [x[0] for x in v] for k, v in groupby(sorted(enumerate(group), key=lambda x: x[1]), lambda x: x[1])}
 
     def _apply(self, func: Callable[[list], Any], axis: Union[int, bool]):
         if self.non_zero:

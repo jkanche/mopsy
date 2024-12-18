@@ -11,9 +11,7 @@ __copyright__ = "jkanche"
 __license__ = "MIT"
 
 
-def append_row(
-    mat: sp.sparse.spmatrix, row: Union[sp.sparse.spmatrix, np.ndarray]
-) -> sp.sparse.spmatrix:
+def append_row(mat: sp.sparse.spmatrix, row: Union[sp.sparse.spmatrix, np.ndarray]) -> sp.sparse.spmatrix:
     """A generic append function for sparse matrices.
 
     Args:
@@ -32,9 +30,7 @@ def append_row(
     return sparse_append(mat=mat, row_or_column=row, axis=0)
 
 
-def append_col(
-    mat: sp.sparse.spmatrix, col: Union[sp.sparse.spmatrix, np.ndarray]
-) -> sp.sparse.spmatrix:
+def append_col(mat: sp.sparse.spmatrix, col: Union[sp.sparse.spmatrix, np.ndarray]) -> sp.sparse.spmatrix:
     """A generic append function for sparse matrices.
 
     Args:
@@ -89,16 +85,12 @@ def sparse_append(
     new_mat = None
     if axis == 0:
         if mat.shape[0] != row_or_column.shape[0]:
-            raise TypeError(
-                "Matrix and new row do not have the same shape along the first dimension."
-            )
+            raise TypeError("Matrix and new row do not have the same shape along the first dimension.")
 
         new_mat = sp.sparse.vstack([mat, row_or_column])
     else:
         if mat.shape[1] != row_or_column.shape[0]:
-            raise TypeError(
-                "Matrix and new row do not have the same shape along the second dimension."
-            )
+            raise TypeError("Matrix and new row do not have the same shape along the second dimension.")
 
         new_mat = sp.sparse.hstack([mat, row_or_column])
 
