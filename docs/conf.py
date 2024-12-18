@@ -171,10 +171,12 @@ pygments_style = "sphinx"
 todo_emit_warnings = True
 
 autodoc_default_options = {
-      'special-members': True,
-      'undoc-members': False,
-      'exclude-members': '__weakref__, __dict__, __str__, __module__, __init__'
-  }
+    # 'members': 'var1, var2',
+    # 'member-order': 'bysource',
+    "special-members": True,
+    "undoc-members": True,
+    "exclude-members": "__weakref__, __dict__, __str__, __module__",
+}
 
 autosummary_generate = True
 autosummary_imported_members = True
