@@ -1,10 +1,14 @@
 # Changelog
 
+## Version 0.3.0
+
+- chore: Remove Python 3.8 (EOL)
+- precommit: Replace docformatter with ruff's formatter
+
 ## Version 0.2.8
 
 - Set dependency for `scipy`. Seems like the hstack and vstack functions
 have been updated in 1.13.0+.
-
 
 ## Version 0.2.0 - 0.2.7
 
